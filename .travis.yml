@@ -1,0 +1,35 @@
+language: objective-c
+cache: 
+  directories:
+    - node_modules
+env:
+  - NODE_VERSION="4.1"
+before_install:
+  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
+  - source /tmp/.nvm/nvm.sh
+  - nvm install $NODE_VERSION
+  - nvm use --delete-prefix $NODE_VERSION
+  - node --version
+install:
+  - npm install
+#before_script:
+script:
+  - npm test
+before_deploy:
+  - brew update
+  - brew install wine
+  - wine --version
+  - brew install makensis
+  - npm run archive
+deploy:
+  provider: releases
+  api_key:
+    secure: HulSXh52zU9pvIDZzdE6K+Cm8DhAdu6MKqF0UKI06tRv37uYB+mVStQMHmeWkM8gH+STQ5QWHoa8UJ62aY69fwo7iCC6CoSmLcUdma+oR2KSXy2kIUy++CTf6vTGS1z6AW+8nf8XoHLorMdMbSAx8z2ttQtARJAYCECBZt9m5B8Wo41bLhtXD9MXWVCY8AooV8lPwrlLJElauGeKXBz8o9mivaaGCRJvH+X0iN3UmB/AFKeyyA9NdAq5YySJH99oIKlyhNoH7cHJX32o4I5jO57DHYR2NLiK4s/eg1unDK2yAYKq46oOVR6qvwKHlfY58HPS/mPKyq0dC9MsxMN67jpp6d+TpcI0sObqI62XHt+oPrMIvf2cAYb6BNT1wTJs9Cgh9CN73vhUyaH59I9gjPhvlAu6Qm0CuDMwnLg75QJJCSWHgvbMzUDdPWWEMpi+UA2nxBK4zmpfzS+oI7nGumdWeMVtKT1VPTe+sAuAMJXThqRpSwyEVbS8k7X7Cdh/yqM+PGrEbNK/2aop//z0OuDwUKl5OvclwixdLPRJo5OQdFmDLgYicgmCtLOLFyGnkQjQJvMJ1cWENmAvdeaJMQRYJG34G5K7Wp07mN7jWifQkUS2IvcdlyUW2pqo+kGLtAms+iohfghZIhHpEpBGZDHWPDwauVmMrz3WRuScu7w=
+  file:
+    - dist/win/Sirusu-win.zip
+    - dist/osx/Sirusu-osx.zip
+  skip_cleanup: true
+  on:
+    repo: ixui/sirusu
+    tags: true
+    all_branches: true
