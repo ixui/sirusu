@@ -24,7 +24,7 @@ app.on('ready', function() {
     'height': mainWindowState.height,
     'icon': __dirname + "/img/icon.png",
   });
-  mainWindow.loadURL('https://photos.google.com/');
+  mainWindow.loadUrl('file://' + __dirname + '/publish/index.html');
 
   mainWindow.on('closed', function() {
     mainWindow = null;
@@ -140,8 +140,7 @@ app.on('ready', function() {
   ];
 
   if (process.platform == 'darwin') {
-    //var name = require('electron').app.getName();
-    var name = "Google フォト";
+    var name = "Sirusu";
     template.unshift({
       label: name,
       submenu: [
