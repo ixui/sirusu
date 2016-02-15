@@ -1,7 +1,5 @@
 language: objective-c
-sudo: false
 cache: 
-  bundler: true
   directories:
     - node_modules
 env:
