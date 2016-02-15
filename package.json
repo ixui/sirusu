@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
+    "start": "gulp && electron .",
     "test": "echo \"Warning: no test specified\"",
     "clean": "rm -rf ./release",
     "clean:osx": "rm -rf ./release/osx",
@@ -39,14 +39,16 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
+    "alt": "^0.18.2",
     "electron-builder": "^2.5.0",
     "electron-packager": "^5.2.0",
     "electron-prebuilt": "^0.36.2",
-    "npm-run-all": "^1.5.1",
-    "alt": "^0.18.2",
     "electron-window-state": "^2.0.0",
     "flux": "^2.1.1",
+    "npm-run-all": "^1.5.1",
     "react": "^0.14.0",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "react-layout-pane": "^0.1.16",
+    "react-tap-event-plugin": "^0.2.2"
   }
 }

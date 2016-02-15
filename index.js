@@ -24,7 +24,7 @@ app.on('ready', function() {
     'height': mainWindowState.height,
     'icon': __dirname + "/img/icon.png",
   });
-  mainWindow.loadUrl('file://' + __dirname + '/dist/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/dist/index.html');
 
   mainWindow.on('closed', function() {
     mainWindow = null;
