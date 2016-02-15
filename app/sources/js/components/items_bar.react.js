@@ -1,5 +1,6 @@
 // Library
 import React from 'react'
+import { Input, MenuItem } from 'react-bootstrap'
 
 class ItemsBar extends React.Component {
 
@@ -7,7 +8,9 @@ class ItemsBar extends React.Component {
 
     return (
       <div>
-		Packed Sirusu with Travis CI
+				<div className="clearfix">
+	      	<Input type="text" className="search-query" bsSize="small" placeholder="Search (All Cells)" />
+	      </div>
       </div>
     )
   }

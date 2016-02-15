@@ -1,5 +1,6 @@
 // Library
 import React from 'react'
+import { Input } from 'react-bootstrap'
 
 class Editor extends React.Component {
 
@@ -7,7 +8,7 @@ class Editor extends React.Component {
 
     return (
       <div>
-		Packed Sirusu with Travis CI
+				<Input type="textarea" label="Markdown Cell" placeholder="# Hello World" />
       </div>
     )
   }

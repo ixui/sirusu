@@ -18,10 +18,21 @@ html, body {
     color: #fff;
 }
 
+.sidebar a {
+    color: #fff;
+}
+.sidebar a:hover {
+    color: #F5F5F5;
+}
+
 .itemsbar {
     padding: 1rem;
     background: #0097A7;
-    width: 200px;
+    width: 300px;
+    color: #fff;
+}
+
+.itemsbar li {
     color: #fff;
 }
 
@@ -31,8 +42,23 @@ html, body {
     color: #212121;
 }
 
+.editor * {
+    color: #212121;
+}
+
 .viewer {
     padding: 1rem;
     background: #FAFAFA;
     color: #212121;
+}
+
+.viewer * {
+    color: #212121;
+}
+
+/* Bootstrap Patchs */
+.search-query {
+    padding: 10px !important;
+    font-size: 12px !important;
+    color: #fff;
 }
