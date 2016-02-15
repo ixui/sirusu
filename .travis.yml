@@ -1,5 +1,6 @@
 language: objective-c
 cache: 
+  bundler: true
   directories:
     - node_modules
 env:
@@ -17,9 +18,11 @@ script:
   - npm test
 before_deploy:
   - brew update
+  - brew install makensis
+  - cd $TRAVIS_BUILD_DIR && travis/download-homebrew
   - brew install wine
   - wine --version
-  - brew install makensis
+  - cd $TRAVIS_BUILD_DIR && travis/cache-homebrew
   - npm run archive
 deploy:
   provider: releases
