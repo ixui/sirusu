@@ -10,7 +10,7 @@ sources =
   static:   ['app/sources/static/**/*']
 
 dist =
-  deploy:   'app/publish'
+  deploy:   'dist'
 
 del         = require 'del'
 gulp        = require 'gulp'
@@ -43,14 +43,14 @@ gulp.task 'compile:js', ->
     .on 'error', (err) ->
       console.log gutil.colors.red "Oops! you have ERROR! \n" + err.message
       this.emit 'end'
-    .pipe source "app.js"
+    .pipe source "sirusu.js"
     # .pipe streamify uglify()
     .pipe gulp.dest dist.deploy
 
 gulp.task 'compile:css', ->
   gulp.src sources.css
     .pipe plumber()
-    .pipe concat 'app.css'
+    .pipe concat 'sirusu.css'
     .pipe gulp.dest dist.deploy
 
 gulp.task 'compile:static', ->

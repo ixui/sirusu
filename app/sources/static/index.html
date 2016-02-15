@@ -4,18 +4,15 @@
     <title>Sirusu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="sirusu.css">
   </head>
   <body>
   	<div id="container"></div>
     <script>
       // Hook Electron - browserfy - babel - ...   Bad knowhow 
       window.require = require;
-      window.jQuery = window.$ = require('jquery');
-      window._ = require('underscore');
-      window.Hammer = require('hammerjs');
       window.React = require('react');
     </script>
-    <script src="app.js"></script>
+    <script src="sirusu.js"></script>
   </body>
 </html>

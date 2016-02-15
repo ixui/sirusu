@@ -7,7 +7,7 @@ class App extends React.Component {
 
     return (
       <div>
-        Hello Sirusu !!
+		Packed Sirusu with Travis CI
       </div>
     )
   }
