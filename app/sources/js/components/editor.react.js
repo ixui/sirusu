@@ -1,15 +1,18 @@
 // Library
 import React from 'react'
-import { Input } from 'react-bootstrap'
+import TextField from 'material-ui/lib/text-field'
 
 class Editor extends React.Component {
 
   render() {
 
     return (
-      <div>
-				<Input type="textarea" label="Markdown Cell" placeholder="# Hello World" />
-      </div>
+
+    	<div>
+      		<TextField hintText="#Hello World"
+		      		   multiLine={true} rows={20} rowsMax={100} />
+		</div>
+
     )
   }
 
