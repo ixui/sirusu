@@ -1,5 +1,5 @@
 // Library
-import connectToStores from 'alt-utils/lib/connectToStores'
+import connectToStores from 'alt/utils/connectToStores'
 import React from 'react'
 import _ from 'lodash'
 
@@ -59,13 +59,22 @@ const listItemStyle = {
 
 class SideBar extends React.Component {
 
+  // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
 	static getStores() {
     return [NotebooksStore, TagsStore]
   }
 
+  // Alt を使用した場合の Props の生成ルール - ここで返す結果がPropsに設定される
   static getPropsFromStores() {
     return _.merge(NotebooksStore.getState(), TagsStore.getState()) 
   }  
+
+  // Alt Store との連結完了後に呼ばれるメソッド - 純正Reactでの componentDidMount で行う処理を記載することになるはず
+  // Storeの変更が絡む処理は componentDidMount ではなく componentDidConnect でしないと変更検知が届かない
+  static componentDidConnect(prop, context) {
+    NotebooksActions.fetch()
+    TagsActions.fetch()
+  }
 
   render() {
 

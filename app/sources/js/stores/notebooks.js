@@ -9,8 +9,12 @@ class NotebooksStore {
   // **************************************************** 
   constructor() {
     this.bindActions(NotebooksActions)
-    this.state = {
-      notes: [
+    this.notes = []
+  }
+
+  onFetch() {
+    console.log("NotebooksStore onFetch")
+    this.notes = [
         {id: UUID.get(), name: "プログラミング"},
         {id: UUID.get(), name: "プログラミング"},
         {id: UUID.get(), name: "プログラミング"},
@@ -20,11 +24,6 @@ class NotebooksStore {
         {id: UUID.get(), name: "プログラミング"},
         {id: UUID.get(), name: "プログラミング"},
       ]
-    }
-  }
-
-  onFetch() {
-
   }
 
 }

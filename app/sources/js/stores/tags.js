@@ -9,20 +9,19 @@ class TagsStore {
   // **************************************************** 
   constructor() {
     this.bindActions(TagsActions)
-    this.state = {
-      tags: [
-        {id: UUID.get(), name: "javascript"},
-        {id: UUID.get(), name: "NodeJS"},
-        {id: UUID.get(), name: "ruby"},
-        {id: UUID.get(), name: "rails"},
-        {id: UUID.get(), name: "react"},
-        {id: UUID.get(), name: "Electron"},
-      ]
-    }
+    this.tags = []
   }
 
   onFetch() {
-
+    console.log("TagsStore onFetch")
+    this.tags = [
+      {id: UUID.get(), name: "javascript"},
+      {id: UUID.get(), name: "NodeJS"},
+      {id: UUID.get(), name: "ruby"},
+      {id: UUID.get(), name: "rails"},
+      {id: UUID.get(), name: "react"},
+      {id: UUID.get(), name: "Electron"},
+    ]
   }
 
 }

@@ -39,8 +39,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "alt": "^0.18.2",
-    "alt-utils": "^1.0.0",
+    "alt": "^0.17.3",
     "electron-builder": "^2.5.0",
     "electron-packager": "^5.2.0",
     "electron-prebuilt": "^0.36.2",
