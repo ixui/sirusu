@@ -6,12 +6,10 @@ import {Layout, Flex, Fixed} from 'react-layout-pane'
 
 // Alt - Flux
 // Actions
-import NotebooksActions from '../actions/notebooks'
-import TagsActions from '../actions/tags'
+import PagesActions  from '../actions/pages'
 import ErrorsActions from '../actions/errors'
 // Stores
-import NotebooksStore from '../stores/notebooks'
-import TagsStore from '../stores/tags'
+import PagesStore from '../stores/pages'
 import BrowserStore from '../stores/browser'
 
 // Design
@@ -23,16 +21,14 @@ import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group'
 import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
-// ******************************************************************
-// Styles
-// ******************************************************************
+
 const textfieldStyle = {
   inputStyle: {
     color:   Colors.white,
     padding: 5,
   },
   underlineStyle: {
-    borderColor: Colors.cyan700,
+    borderColor: Colors.cyan800,
   },
   underlineFocusStyle: {
     borderColor: Colors.cyan300,
@@ -41,74 +37,64 @@ const textfieldStyle = {
 
 const listStyle = {
   style: {
-    backgroundColor: Colors.cyan800,
+    backgroundColor: Colors.cyan700,
     paddingTop      : '1px',
     paddingBottom   : '1px',
     overflowY       : 'scroll',
-    height          : '400px',
-
+    height          : '800px',
   },
   subheaderStyle: {
-    backgroundColor: Colors.cyan800,
+    backgroundColor: Colors.cyan700,
     color          : Colors.grey100,
     paddingTop     : '1px',
     paddingBottom  : '1px',
-    fontSize       : '12px',
+    fontSize       : '24px',
   },
 }
 
 const listItemStyle = {
   innerDivStyle: {
-    color          : Colors.grey100,
-    paddingTop     : '1px',
-    paddingBottom  : '1px',
-    fontSize       : '12px',
+    color          : Colors.cyan100,
+    paddingTop     : '3px',
+    paddingBottom  : '3px',
+    fontSize       : '14px',
   },
 }
 
 const toolbarStyle = {
   style: {
-    backgroundColor: Colors.cyan800,
+    backgroundColor: Colors.cyan700,
   },
   iconStyle: {
     fontSize:      '24px',
-    color:         Colors.cyan700,
+    color:         Colors.cyan800,
   },
 }
 
-class SideBar extends React.Component {
+class PagesBar extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
-	static getStores() {
-    return [NotebooksStore, TagsStore, BrowserStore]
+  static getStores() {
+    return [PagesStore, BrowserStore]
   }
 
   // Alt を使用した場合の Props の生成ルール - ここで返す結果がPropsに設定される
   static getPropsFromStores() {
-    return _.merge(NotebooksStore.getState(), TagsStore.getState(), BrowserStore.getState()) 
+    return _.merge(PagesStore.getState(), BrowserStore.getState())
   }  
 
   // Alt Store との連結完了後に呼ばれるメソッド - 純正Reactでの componentDidMount で行う処理を記載することになるはず
   // Storeの変更が絡む処理は componentDidMount ではなく componentDidConnect でしないと変更検知が届かない
   static componentDidConnect(prop, context) {
-    NotebooksActions.fetch()
-    TagsActions.fetch()
+    PagesActions.fetch()
   }
 
   render() {
 
-    let dynamicListStyle = _.merge(listStyle.style, {height: (this.props.height - 100) / 2})
+    let dynamicListStyle = _.merge(listStyle.style, {height: this.props.height - 100})
 
-  	let notes = this.props.notes.map((note, index) => {
-  		return (
-        <ListItem key={note.id} innerDivStyle={listItemStyle.innerDivStyle} primaryText={note.name}/>
-  		)
-  	})
-
-    let tags = this.props.tags.map((tag, index) => {
-      return (
-        <ListItem key={tag.id} innerDivStyle={listItemStyle.innerDivStyle} primaryText={tag.name}/>
-      )
+    let pages = this.props.pages.map((page, index) => {
+      return (<ListItem key={page.id} innerDivStyle={listItemStyle.innerDivStyle} primaryText={page.title} secondaryText={page.subtitle}/>)
     })
 
     return (
@@ -116,19 +102,15 @@ class SideBar extends React.Component {
       <Layout type="column">
 
         <Flex>
-          <TextField hintText="　Search (Notes, Tags)　" 
+          <TextField hintText="　Search (All Cells)　" 
                  inputStyle={textfieldStyle.inputStyle}
                  underlineStyle={textfieldStyle.underlineStyle}
                  underlineFocusStyle={textfieldStyle.underlineFocusStyle}
                  fullWidth className="search-query" />
           <br/>
 
-          <List subheader="Notes" style={dynamicListStyle} subheaderStyle={listStyle.subheaderStyle}>
-            {notes}
-          </List>
-
-          <List subheader="Tags" style={dynamicListStyle} subheaderStyle={listStyle.subheaderStyle}>
-            {tags}
+          <List subheader="Pages" style={dynamicListStyle} subheaderStyle={listStyle.subheaderStyle}>
+            {pages}
           </List>
         </Flex>
 
@@ -136,7 +118,6 @@ class SideBar extends React.Component {
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
               <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Noteの追加" tooltipPosition="top-center">add</IconButton>
-              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="アプリの設定" tooltipPosition="top-center">settings</IconButton>
             </ToolbarGroup>
           </Toolbar>
         </Fixed>
@@ -148,4 +129,4 @@ class SideBar extends React.Component {
 
 }
 
-export default connectToStores(SideBar)
+export default connectToStores(PagesBar)
