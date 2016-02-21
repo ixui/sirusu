@@ -24,6 +24,7 @@ import TextField from 'material-ui/lib/text-field'
 import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
+import Cell from '../components/editor_cell.react'
 import Spacer from '../components/helpers/spacer.react'
 
 
@@ -36,38 +37,6 @@ const toolbarStyle = {
     color:         Colors.cyan800,
   },
 }
-
-const cardStyle = {
-  headerStyle: {
-    height:        '10px',
-    paddingTop:    '3px',
-    paddingBottom: '3px',
-    paddingLeft:   '3px',
-  },
-  titleStyle: {
-    fontSize:      '10px',
-    color:         Colors.grey300,
-  },
-  textStyle: {
-    maxHeight:     '300px',
-    overflowY:     'scroll',
-  },
-  inputStyle: {
-  },
-  buttonStyle: {
-    margin:        -10,
-  },
-  buttonLabelStyle: {
-    fontSize:      '10px',
-    color:         Colors.grey500,
-  },
-  delButtonLabelStyle: {
-    fontSize:      '10px',
-    color:         Colors.red500,
-    fontWeight:    'bold'
-  },
-}
-
 
 class Editor extends React.Component {
 
@@ -90,27 +59,9 @@ class Editor extends React.Component {
   render() {
 
     let cells = this.props.cells.map ((cell) => {
-      let type = cell.subtype ? cell.subtype : cell.type
       return (
         <div key={cell.id}>
-          <Card>
-            <CardHeader title={type} style={cardStyle.headerStyle} titleStyle={cardStyle.titleStyle} ></CardHeader>
-            <CardText style={cardStyle.textStyle}>
-              <TextField hintText="# Hello World"
-                         inputStyle={cardStyle.inputStyle}
-                         underlineShow={false}
-                         multiLine={true} rows={1} rowsMax={1000}></TextField>
-            </CardText>
-            <CardActions>
-              <FlatButton label="Markdown" style={cardStyle.buttonStyle} labelStyle={cardStyle.buttonLabelStyle}/>
-              <FlatButton label="Diagram"  style={cardStyle.buttonStyle} labelStyle={cardStyle.buttonLabelStyle}/>
-              <FlatButton label="Code"     style={cardStyle.buttonStyle} labelStyle={cardStyle.buttonLabelStyle}/>
-              <FlatButton label="Remove"   style={cardStyle.buttonStyle} labelStyle={cardStyle.delButtonLabelStyle}/>
-            </CardActions>
-          </Card>
-
-          <Spacer/>
-
+          <Cell cell={cell} />
         </div>
       )
     })
