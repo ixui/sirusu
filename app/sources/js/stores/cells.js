@@ -17,6 +17,10 @@ class CellsStore {
     this.cells = [
         {id: UUID.get(), type: "markdown", subtype: null, body: "# Hello World"},
         {id: UUID.get(), type: "code", subtype: "javascript", body: "alert('Hello World')"},
+        {id: UUID.get(), type: "diagram", subtype: null, body: ""},
+        {id: UUID.get(), type: "markdown", subtype: null, body: "# Hello World"},
+        {id: UUID.get(), type: "markdown", subtype: null, body: "# Hello World"},
+        {id: UUID.get(), type: "markdown", subtype: null, body: "# Hello World"},
       ]
   }
 

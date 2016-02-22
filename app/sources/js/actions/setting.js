@@ -10,6 +10,10 @@ class SettingActions {
     this.dispatch()
   }
 
+  save(path) {
+    this.dispatch({dataPath: path})
+  }
+
 
 }
 

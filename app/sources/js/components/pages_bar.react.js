@@ -117,7 +117,7 @@ class PagesBar extends React.Component {
         <Fixed>
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Noteの追加" tooltipPosition="top-center">add</IconButton>
+              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Pageの追加" tooltipPosition="top-right">add</IconButton>
             </ToolbarGroup>
           </Toolbar>
         </Fixed>

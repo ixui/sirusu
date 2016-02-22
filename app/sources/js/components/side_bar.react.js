@@ -80,6 +80,19 @@ const toolbarStyle = {
   },
 }
 
+const settingFieldStyle = {
+  inputStyle: {
+    color:   Colors.grey800,
+    padding: 5,
+  },
+  underlineStyle: {
+    borderColor: Colors.cyan700,
+  },
+  underlineFocusStyle: {
+    borderColor: Colors.cyan300,
+  },
+}
+
 class SideBar extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
@@ -99,13 +112,21 @@ class SideBar extends React.Component {
     TagsActions.fetch()
   }
 
+  addNote() {
+    SettingActions.show()
+  }
+
   showSettingView() {
     SettingActions.show()
   }
 
   hideSettingView() {
-    SettingActions.save({dataPath: ""})
     SettingActions.hide()
+  }
+
+  onSettingChange() {
+    let dataPath = this.refs.dataPath.getValue()
+    SettingActions.save(dataPath)
   }
 
   render() {
@@ -156,8 +177,16 @@ class SideBar extends React.Component {
         <Fixed>
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Noteの追加" tooltipPosition="top-right">add</IconButton>
-              <IconButton onClick={this.showSettingView.bind(this)} iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="アプリの設定" tooltipPosition="top-right">settings</IconButton>
+              <IconButton onClick={this.addNote.bind(this)} 
+                          iconStyle={toolbarStyle.iconStyle} 
+                          iconClassName="material-icons" 
+                          tooltip="Noteの追加" 
+                          tooltipPosition="top-right">add</IconButton>
+              <IconButton onClick={this.showSettingView.bind(this)} 
+                          iconStyle={toolbarStyle.iconStyle} 
+                          iconClassName="material-icons" 
+                          tooltip="アプリの設定" 
+                          tooltipPosition="top-right">settings</IconButton>
             </ToolbarGroup>
           </Toolbar>
         </Fixed>
@@ -169,10 +198,13 @@ class SideBar extends React.Component {
           onRequestClose={this.hideSettingView.bind(this)}>
 
           <TextField hintText="　データの保存先　" 
-                 inputStyle={textfieldStyle.inputStyle}
-                 underlineStyle={textfieldStyle.underlineStyle}
-                 underlineFocusStyle={textfieldStyle.underlineFocusStyle}
-                 fullWidth className="search-query" />
+                 inputStyle={settingFieldStyle.inputStyle}
+                 underlineStyle={settingFieldStyle.underlineStyle}
+                 underlineFocusStyle={settingFieldStyle.underlineFocusStyle}
+                 onChange={this.onSettingChange.bind(this)}
+                 value={this.props.dataPath} 
+                 ref="dataPath"
+                 fullWidth />
           
         </Dialog>
      </Layout>

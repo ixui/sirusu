@@ -27,6 +27,12 @@ import Colors from 'material-ui/lib/styles/colors'
 import Cell from '../components/editor_cell.react'
 import Spacer from '../components/helpers/spacer.react'
 
+const editorStyle = {
+  style: {
+    overflowY       : 'auto',
+    height          : '800px',
+  },
+}
 
 const toolbarStyle = {
   style: {
@@ -58,6 +64,8 @@ class Editor extends React.Component {
 
   render() {
 
+    let dynamicEditorStyle = _.merge(editorStyle.style, {height: this.props.height - 100})
+
     let cells = this.props.cells.map ((cell) => {
       return (
         <div key={cell.id}>
@@ -70,14 +78,14 @@ class Editor extends React.Component {
 
       <Layout type="column">
 
-        <Flex>
+        <Flex style={dynamicEditorStyle}>
           {cells}
         </Flex>
 
         <Fixed>
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="セルの追加" tooltipPosition="top-center">add</IconButton>
+              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="セルの追加" tooltipPosition="top-right">add</IconButton>
             </ToolbarGroup>
           </Toolbar>
         </Fixed>

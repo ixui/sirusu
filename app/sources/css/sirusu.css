@@ -50,11 +50,11 @@ html, body {
 .viewer {
     padding: 1rem;
     background: #FAFAFA;
-    color: #212121;
+    /*color: #212121;*/
 }
 
 .viewer * {
-    color: #212121;
+    /*color: #212121;*/
 }
 
 .search-query {

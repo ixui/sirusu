@@ -10,6 +10,7 @@ class SettingStore {
   constructor() {
     this.bindActions(SettingActions)
     this.visibleSettingView = false
+    this.dataPath = ""
   }
 
   onShow() {
@@ -18,6 +19,10 @@ class SettingStore {
 
   onHide() {
     this.visibleSettingView  = false
+  }
+
+  onSave(data) {
+    this.dataPath  = data.dataPath
   }
 
 }

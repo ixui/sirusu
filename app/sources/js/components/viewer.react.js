@@ -4,7 +4,7 @@ import React from 'react'
 import {Layout, Flex, Fixed} from 'react-layout-pane'
 import Highlight from 'react-highlight'
 import {MarkedPreview} from 'react-markdown-area'
-import Mermaid from 'react-mermaid'
+import Mermaid  from '../components/helpers/mermaid'
 
 // Alt - Flux
 // Actions
@@ -24,9 +24,11 @@ let classNames = {
   liveDivider: 'marked-area-live-divider'
 }
 
-const flexStyle = {
+const viewerStyle = {
   style: {
-    padding: 5,
+    padding         : 5,
+    overflowY       : 'auto',
+    height          : 800,
   },
 }
 
@@ -50,6 +52,8 @@ class Viewer extends React.Component {
 
   render() {
 
+    let dynamicViewerStyle = _.merge(viewerStyle.style, {height: this.props.height - 100})
+
     let cells = this.props.cells.map ((cell) => {
 
     	switch(cell.type) {
@@ -72,9 +76,7 @@ class Viewer extends React.Component {
 		    case "diagram":
 		    		return (
 		    			<div key={cell.id}>
-								<Mermaid name="diagram">
-									{cell.body}
-					      </Mermaid>
+                <Mermaid text={cell.body}/>
 		    			</div>
 		    		)
 		        break
@@ -88,7 +90,7 @@ class Viewer extends React.Component {
 
       <Layout type="column">
 
-        <Flex style={flexStyle.style}>
+        <Flex style={dynamicViewerStyle}>
           {cells}
         </Flex>
 
