@@ -9,12 +9,12 @@ class Mermaid extends React.Component {
     this.state = {diagram: "..."}
   }
 
-  componentDidMount () {
-    mermaidAPI.render("mermaid", this.props.text, (html) => this.setState({diagram: html}))
-  }
-
   componentWillReceiveProps(nextProps) {
     mermaidAPI.render("mermaid", nextProps.text, (html) => this.setState({diagram: html}))
+  }
+
+  componentDidMount () {
+    mermaidAPI.render("mermaid", this.props.text, (html) => this.setState({diagram: html}))
   }
 
   render() {

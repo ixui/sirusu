@@ -99,6 +99,7 @@ class EditorCell extends React.Component {
                          inputStyle={cardStyle.inputStyle}
                          underlineShow={false}
                          multiLine={true} rows={1} rowsMax={1000}
+                         fullWidth={true}
                          onChange={this.onChange.bind(this)}
                          value={bodyText} 
                          ref="bodyText"

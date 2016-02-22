@@ -818,6 +818,7 @@ var EditorCell = function (_React$Component) {
               inputStyle: cardStyle.inputStyle,
               underlineShow: false,
               multiLine: true, rows: 1, rowsMax: 1000,
+              fullWidth: true,
               onChange: this.onChange.bind(this),
               value: bodyText,
               ref: 'bodyText'
@@ -897,20 +898,20 @@ var Mermaid = function (_React$Component) {
   }
 
   _createClass(Mermaid, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
       var _this2 = this;
 
-      _mermaid.mermaidAPI.render("mermaid", this.props.text, function (html) {
+      _mermaid.mermaidAPI.render("mermaid", nextProps.text, function (html) {
         return _this2.setState({ diagram: html });
       });
     }
   }, {
-    key: 'componentWillReceiveProps',
-    value: function componentWillReceiveProps(nextProps) {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       var _this3 = this;
 
-      _mermaid.mermaidAPI.render("mermaid", nextProps.text, function (html) {
+      _mermaid.mermaidAPI.render("mermaid", this.props.text, function (html) {
         return _this3.setState({ diagram: html });
       });
     }
