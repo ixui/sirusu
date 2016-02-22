@@ -40,7 +40,7 @@ const listStyle = {
     backgroundColor: Colors.cyan700,
     paddingTop      : '1px',
     paddingBottom   : '1px',
-    overflowY       : 'scroll',
+    overflowY       : 'auto',
     height          : '800px',
   },
   subheaderStyle: {

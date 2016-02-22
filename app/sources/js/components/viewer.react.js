@@ -24,6 +24,12 @@ let classNames = {
   liveDivider: 'marked-area-live-divider'
 }
 
+const flexStyle = {
+  style: {
+    padding: 5,
+  },
+}
+
 class Viewer extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
@@ -82,7 +88,7 @@ class Viewer extends React.Component {
 
       <Layout type="column">
 
-        <Flex>
+        <Flex style={flexStyle.style}>
           {cells}
         </Flex>
 

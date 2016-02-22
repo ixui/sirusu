@@ -48,7 +48,7 @@ const listStyle = {
     backgroundColor: Colors.cyan800,
     paddingTop      : '1px',
     paddingBottom   : '1px',
-    overflowY       : 'scroll',
+    overflowY       : 'auto',
     height          : '400px',
 
   },
@@ -156,8 +156,8 @@ class SideBar extends React.Component {
         <Fixed>
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Noteの追加" tooltipPosition="top-center">add</IconButton>
-              <IconButton onClick={this.showSettingView.bind(this)} iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="アプリの設定" tooltipPosition="top-center">settings</IconButton>
+              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Noteの追加" tooltipPosition="top-right">add</IconButton>
+              <IconButton onClick={this.showSettingView.bind(this)} iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="アプリの設定" tooltipPosition="top-right">settings</IconButton>
             </ToolbarGroup>
           </Toolbar>
         </Fixed>

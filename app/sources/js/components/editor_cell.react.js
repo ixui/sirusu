@@ -31,12 +31,16 @@ const cardStyle = {
   },
   textStyle: {
     maxHeight:     '300px',
-    overflowY:     'scroll',
+    overflowY:     'auto',
   },
   inputStyle: {
   },
   buttonStyle: {
-    margin:        -10,
+    margin:        -16,
+    paddingTop:    2,
+    paddingBottom: 2,
+    paddingLeft:   4,
+    paddingRight:  4,
   },
   buttonLabelStyle: {
     fontSize:      '10px',
@@ -46,6 +50,14 @@ const cardStyle = {
     fontSize:      '10px',
     color:         Colors.red500,
     fontWeight:    'bold'
+  },
+  iconStyle: {
+    fontSize:      '24px',
+    color:         Colors.cyan700,
+  },
+  deliconStyle: {
+    fontSize:      '24px',
+    color:         Colors.red300,
   },
 }
 
@@ -65,7 +77,8 @@ class EditorCell extends React.Component {
   }
 
   onChange() {
-    CellsActions.update(this.props.cell, "AAAAA")
+    let text = this.refs.bodyText.getValue()
+    CellsActions.update(this.props.cell, text)
   }
 
   onRemove() {
@@ -76,6 +89,7 @@ class EditorCell extends React.Component {
 
       let cell = this.props.cell
       let type = cell.subtype ? cell.subtype : cell.type
+      let bodyText = cell.body ? cell.body : ""
       return (
         <div key={cell.id}>
           <Card>
@@ -85,13 +99,17 @@ class EditorCell extends React.Component {
                          inputStyle={cardStyle.inputStyle}
                          underlineShow={false}
                          multiLine={true} rows={1} rowsMax={1000}
+                         onChange={this.onChange.bind(this)}
+                         value={bodyText} 
+                         ref="bodyText"
                          ></TextField>
             </CardText>
             <CardActions>
-              <FlatButton label="Markdown" onClick={this.toMarkdown.bind(this)} style={cardStyle.buttonStyle} labelStyle={cardStyle.buttonLabelStyle}/>
-              <FlatButton label="Diagram"  onClick={this.toDiagram.bind(this)}  style={cardStyle.buttonStyle} labelStyle={cardStyle.buttonLabelStyle}/>
-              <FlatButton label="Code"     onClick={this.toCode.bind(this)}     style={cardStyle.buttonStyle} labelStyle={cardStyle.buttonLabelStyle}/>
-              <FlatButton label="Remove"   onClick={this.onRemove.bind(this)}   style={cardStyle.buttonStyle} labelStyle={cardStyle.delButtonLabelStyle}/>
+              <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
+              <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
+              <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
+
+              <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
             </CardActions>
           </Card>
 
