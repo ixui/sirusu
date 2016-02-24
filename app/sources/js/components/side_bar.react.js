@@ -13,7 +13,6 @@ import ErrorsActions from '../actions/errors'
 // Stores
 import NotebooksStore from '../stores/notebooks'
 import TagsStore from '../stores/tags'
-import SettingStore from '../stores/setting'
 import BrowserStore from '../stores/browser'
 
 // Design
@@ -26,6 +25,8 @@ import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
+
+import SettingDialog from '../components/setting_dialog.react'
 
 // ******************************************************************
 // Styles
@@ -80,29 +81,16 @@ const toolbarStyle = {
   },
 }
 
-const settingFieldStyle = {
-  inputStyle: {
-    color:   Colors.grey800,
-    padding: 5,
-  },
-  underlineStyle: {
-    borderColor: Colors.cyan700,
-  },
-  underlineFocusStyle: {
-    borderColor: Colors.cyan300,
-  },
-}
-
 class SideBar extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
 	static getStores() {
-    return [NotebooksStore, TagsStore, SettingStore, BrowserStore]
+    return [NotebooksStore, TagsStore, BrowserStore]
   }
 
   // Alt を使用した場合の Props の生成ルール - ここで返す結果がPropsに設定される
   static getPropsFromStores() {
-    return _.merge(NotebooksStore.getState(), TagsStore.getState(), SettingStore.getState(), BrowserStore.getState()) 
+    return _.merge(NotebooksStore.getState(), TagsStore.getState(), BrowserStore.getState()) 
   }  
 
   // Alt Store との連結完了後に呼ばれるメソッド - 純正Reactでの componentDidMount で行う処理を記載することになるはず
@@ -120,15 +108,6 @@ class SideBar extends React.Component {
     SettingActions.show()
   }
 
-  hideSettingView() {
-    SettingActions.hide()
-  }
-
-  onSettingChange() {
-    let dataPath = this.refs.dataPath.getValue()
-    SettingActions.save(dataPath)
-  }
-
   render() {
 
     let dynamicListStyle = _.merge(listStyle.style, {height: (this.props.height - 100) / 2})
@@ -144,14 +123,6 @@ class SideBar extends React.Component {
         <ListItem key={tag.id} innerDivStyle={listItemStyle.innerDivStyle} primaryText={tag.name}/>
       )
     })
-
-    let actions = [
-      <FlatButton
-        label="OK"
-        primary={true}
-        keyboardFocused={true}
-        onClick={this.hideSettingView.bind(this)}></FlatButton>,
-    ]
 
     return (
 
@@ -191,22 +162,8 @@ class SideBar extends React.Component {
           </Toolbar>
         </Fixed>
 
-        <Dialog title="設定"
-          actions={actions}
-          modal={true}
-          open={this.props.visibleSettingView}
-          onRequestClose={this.hideSettingView.bind(this)}>
+        <SettingDialog/>
 
-          <TextField hintText="　データの保存先　" 
-                 inputStyle={settingFieldStyle.inputStyle}
-                 underlineStyle={settingFieldStyle.underlineStyle}
-                 underlineFocusStyle={settingFieldStyle.underlineFocusStyle}
-                 onChange={this.onSettingChange.bind(this)}
-                 value={this.props.dataPath} 
-                 ref="dataPath"
-                 fullWidth />
-          
-        </Dialog>
      </Layout>
 
     )

@@ -10,7 +10,7 @@ class SettingStore {
   constructor() {
     this.bindActions(SettingActions)
     this.visibleSettingView = false
-    this.dataPath = ""
+    this.dataPath = localStorage.getItem('dataPath') || ''
   }
 
   onShow() {
@@ -22,6 +22,7 @@ class SettingStore {
   }
 
   onSave(data) {
+    localStorage.setItem('dataPath', data.dataPath)
     this.dataPath  = data.dataPath
   }
 
