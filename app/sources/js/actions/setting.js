@@ -2,11 +2,11 @@ import alt from '../alt'
 
 class SettingActions {
 
-  show() {
+  showSettingView() {
     this.dispatch()
   }
 
-  hide() {
+  hideSettingView() {
     this.dispatch()
   }
 

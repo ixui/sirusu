@@ -26,7 +26,8 @@ import Colors from 'material-ui/lib/styles/colors'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
 
-import SettingDialog from '../components/setting_dialog.react'
+import SettingDialog from '../components/dialog/setting_dialog.react'
+import NewNoteDialog from '../components/dialog/new_note_dialog.react'
 
 // ******************************************************************
 // Styles
@@ -101,11 +102,11 @@ class SideBar extends React.Component {
   }
 
   addNote() {
-    SettingActions.show()
+    NotebooksActions.showNewNoteView()
   }
 
   showSettingView() {
-    SettingActions.show()
+    SettingActions.showSettingView()
   }
 
   render() {
@@ -163,6 +164,7 @@ class SideBar extends React.Component {
         </Fixed>
 
         <SettingDialog/>
+        <NewNoteDialog/>
 
      </Layout>
 

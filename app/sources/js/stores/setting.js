@@ -13,11 +13,11 @@ class SettingStore {
     this.dataPath = localStorage.getItem('dataPath') || ''
   }
 
-  onShow() {
+  onShowSettingView() {
     this.visibleSettingView  = true
   }
 
-  onHide() {
+  onHideSettingView() {
     this.visibleSettingView  = false
   }
 

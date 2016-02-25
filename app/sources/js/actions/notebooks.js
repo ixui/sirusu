@@ -6,6 +6,22 @@ class NotebooksActions {
     this.dispatch()
   }
 
+  showNewNoteView(){
+    this.dispatch()
+  }
+
+  showEditNoteView(){
+    this.dispatch()
+  }
+
+  hideNewNoteView(){
+    this.dispatch()
+  }
+
+  hideEditNoteView(){
+    this.dispatch()
+  }
+
 }
 
 export default alt.createActions(NotebooksActions)

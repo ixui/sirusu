@@ -4,10 +4,10 @@ import React from 'react'
 
 // Alt - Flux
 // Actions
-import SettingActions from '../actions/setting'
+import SettingActions from '../../actions/setting'
 // Stores
-import SettingStore from '../stores/setting'
-import BrowserStore from '../stores/browser'
+import SettingStore from '../../stores/setting'
+import BrowserStore from '../../stores/browser'
 
 // Design
 import TextField from 'material-ui/lib/text-field'

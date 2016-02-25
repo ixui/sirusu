@@ -9,6 +9,13 @@ class NotebooksStore {
   // **************************************************** 
   constructor() {
     this.bindActions(NotebooksActions)
+
+    // 関連画面管理
+    this.visibleNewNoteView = false
+    this.visibleEditNoteView = false
+
+    // データ管理
+    this.currentNote = null
     this.notes = []
   }
 
@@ -24,6 +31,23 @@ class NotebooksStore {
         {id: UUID.get(), name: "プログラミング"},
         {id: UUID.get(), name: "プログラミング"},
       ]
+    this.currentNote = this.notes[0]
+  }
+
+  onShowNewNoteView(){
+    this.visibleNewNoteView = true
+  }
+
+  onShowEditNoteView(){
+    this.visibleEditNoteView = true
+  }
+
+  onHideNewNoteView(){
+    this.visibleNewNoteView = false
+  }
+
+  onHideEditNoteView(){
+    this.visibleEditNoteView = false
   }
 
 }
