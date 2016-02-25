@@ -46,6 +46,11 @@ class NotebooksStore {
     })
   }
 
+  onDelete(){
+    this.notes = _.reject(this.notes, ["id", this.currentNote.id])
+    if (this.notes.length > 0) this.currentNote = this.notes[0]
+  }
+
   onSelect(data){
     this.currentNote = data.note
   }

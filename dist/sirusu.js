@@ -173,6 +173,11 @@ var NotebooksActions = function () {
       this.dispatch({ name: name });
     }
   }, {
+    key: 'delete',
+    value: function _delete() {
+      this.dispatch();
+    }
+  }, {
     key: 'select',
     value: function select(note) {
       this.dispatch({ note: note });
@@ -579,6 +584,12 @@ var EditNoteDialog = function (_React$Component) {
       _notebooks2.default.hideEditNoteView();
     }
   }, {
+    key: 'deleteNote',
+    value: function deleteNote() {
+      _notebooks2.default.delete();
+      _notebooks2.default.hideEditNoteView();
+    }
+  }, {
     key: 'hideEditNoteView',
     value: function hideEditNoteView() {
       _notebooks2.default.hideEditNoteView();
@@ -591,8 +602,9 @@ var EditNoteDialog = function (_React$Component) {
         label: 'Update',
         primary: true,
         onClick: this.updateNote.bind(this) }), _react2.default.createElement(_flatButton2.default, {
+        label: 'Delete',
+        onClick: this.deleteNote.bind(this) }), _react2.default.createElement(_flatButton2.default, {
         label: 'Cancel',
-        primary: true,
         onClick: this.hideEditNoteView.bind(this) })];
 
       var name = this.props.currentNote ? this.props.currentNote.name : "";
@@ -2963,6 +2975,12 @@ var NotebooksStore = function () {
         if (_this.currentNote.id == note.id) _lodash2.default.merge(note, { name: data.name });
         return note;
       });
+    }
+  }, {
+    key: 'onDelete',
+    value: function onDelete() {
+      this.notes = _lodash2.default.reject(this.notes, ["id", this.currentNote.id]);
+      if (this.notes.length > 0) this.currentNote = this.notes[0];
     }
   }, {
     key: 'onSelect',

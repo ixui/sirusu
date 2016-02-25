@@ -51,6 +51,11 @@ class EditNoteDialog extends React.Component {
     NotebooksActions.hideEditNoteView()
   }
 
+  deleteNote() {
+    NotebooksActions.delete()
+    NotebooksActions.hideEditNoteView()
+  }
+
   hideEditNoteView() {
     NotebooksActions.hideEditNoteView()
   }
@@ -63,8 +68,10 @@ class EditNoteDialog extends React.Component {
         primary={true}
         onClick={this.updateNote.bind(this)}></FlatButton>,
       <FlatButton
+        label="Delete"
+        onClick={this.deleteNote.bind(this)}></FlatButton>,
+      <FlatButton
         label="Cancel"
-        primary={true}
         onClick={this.hideEditNoteView.bind(this)}></FlatButton>,
     ]
 

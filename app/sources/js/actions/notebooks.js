@@ -14,6 +14,10 @@ class NotebooksActions {
     this.dispatch({name: name})
   }
 
+  delete(){
+    this.dispatch()
+  }
+
   select(note){
     this.dispatch({note: note})
   }
