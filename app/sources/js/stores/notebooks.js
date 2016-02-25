@@ -1,6 +1,7 @@
 import Alt from '../alt'
 import NotebooksActions from '../actions/notebooks'
 import UUID from '../stores/helpers/uuid'
+import _ from 'lodash'
 
 class NotebooksStore {
 
@@ -32,6 +33,21 @@ class NotebooksStore {
         {id: UUID.get(), name: "プログラミング"},
       ]
     this.currentNote = this.notes[0]
+  }
+
+  onAdd(data){
+    this.notes.push({id: UUID.get(), name: data.name})
+  }
+
+  onUpdate(data){
+    this.notes = _.map(this.notes, (note) => {
+      if (this.currentNote.id == note.id) _.merge(note, {name: data.name}) 
+      return note
+    })
+  }
+
+  onSelect(data){
+    this.currentNote = data.note
   }
 
   onShowNewNoteView(){

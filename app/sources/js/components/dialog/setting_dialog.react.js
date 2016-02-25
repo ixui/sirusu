@@ -66,7 +66,6 @@ class SettingDialog extends React.Component {
       <FlatButton
         label="Close"
         primary={true}
-        keyboardFocused={true}
         onClick={this.hideSettingView.bind(this)}></FlatButton>,
     ]
 

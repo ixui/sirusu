@@ -45,6 +45,12 @@ class AddNewNoteDialog extends React.Component {
     return _.merge(NotebooksStore.getState(), BrowserStore.getState()) 
   }  
 
+  addNewNote() {
+    let name = this.refs.name.getValue()
+    NotebooksActions.add(name)
+    NotebooksActions.hideNewNoteView()
+  }
+
   hideNewNoteView() {
     NotebooksActions.hideNewNoteView()
   }
@@ -53,9 +59,9 @@ class AddNewNoteDialog extends React.Component {
 
     let actions = [
       <FlatButton
-        label="OK"
+        label="Add"
         primary={true}
-        onClick={this.hideNewNoteView.bind(this)}></FlatButton>,
+        onClick={this.addNewNote.bind(this)}></FlatButton>,
       <FlatButton
         label="Cancel"
         primary={true}
@@ -74,6 +80,7 @@ class AddNewNoteDialog extends React.Component {
                inputStyle={inputFieldStyle.inputStyle}
                underlineStyle={inputFieldStyle.underlineStyle}
                underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
+               ref="name"
                fullWidth />
         
       </Dialog>

@@ -6,6 +6,18 @@ class NotebooksActions {
     this.dispatch()
   }
 
+  add(name){
+    this.dispatch({name: name})
+  }
+
+  update(name){
+    this.dispatch({name: name})
+  }
+
+  select(note){
+    this.dispatch({note: note})
+  }
+
   showNewNoteView(){
     this.dispatch()
   }
