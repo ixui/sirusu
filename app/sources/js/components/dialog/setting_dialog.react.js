@@ -4,6 +4,7 @@ import React from 'react'
 
 // Alt - Flux
 // Actions
+import NotebooksActions from '../../actions/notebooks'
 import SettingActions from '../../actions/setting'
 // Stores
 import SettingStore from '../../stores/setting'
@@ -52,7 +53,10 @@ class SettingDialog extends React.Component {
     let focusedWindow = browserWindow.getFocusedWindow();
 
     dialog.showOpenDialog(focusedWindow, {properties: ['openDirectory', 'createDirectory']}, function(directories) {
-      if (directories) SettingActions.save(directories[0]) 
+      if (directories) {
+        SettingActions.save(directories[0]) 
+        NotebooksActions.fetch()
+      }
     }.bind(this))
   }
 

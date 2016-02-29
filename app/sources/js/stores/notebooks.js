@@ -2,6 +2,11 @@ import Alt from '../alt'
 import NotebooksActions from '../actions/notebooks'
 import UUID from '../stores/helpers/uuid'
 import _ from 'lodash'
+import SettingStore from '../stores/setting'
+
+let app = remote.require('app')
+let fs = remote.require('fs')
+let path = remote.require("path")
 
 class NotebooksStore {
 
@@ -21,32 +26,79 @@ class NotebooksStore {
   }
 
   onFetch() {
-    console.log("NotebooksStore onFetch")
-    this.notes = [
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-        {id: UUID.get(), name: "プログラミング"},
-      ]
-    this.currentNote = this.notes[0]
+
+    let _this = this
+
+    // 設定からデータの取得先を取得する
+    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+
+    let notesBuffer = []
+    fs.readdir(dataPath, (err, files) => {
+
+      files.map(file => {
+          return path.join(dataPath, file)
+      }).filter(file => {
+          return !fs.statSync(file).isFile();
+      }).forEach(file => {
+        // データ取得先にあるディレクトリからノートブックの一覧を作成する
+        notesBuffer.push({id: UUID.get(), name: _.last(file.split(path.sep))})
+      })
+
+        _this.notes = notesBuffer
+        _this.currentNote = _this.notes[0]
+        _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
+    })
+
   }
 
   onAdd(data){
+
+    let _this = this
+
+    // 設定からデータの取得先を取得する
+    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+    let addPath = path.join(dataPath, data.name)
+
+    // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
+    fs.mkdir(addPath, (e) => {
+      if(!e || (e && e.code === 'EEXIST')){
+      } else {
+      }
+    })
+
     this.notes.push({id: UUID.get(), name: data.name})
   }
 
   onUpdate(data){
+
+    // 設定からデータの取得先を取得する
+    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+
     this.notes = _.map(this.notes, (note) => {
-      if (this.currentNote.id == note.id) _.merge(note, {name: data.name}) 
+      if (this.currentNote.id == note.id) {
+
+        let before = path.join(dataPath, note.name)
+        let after = path.join(dataPath, data.name)
+
+        fs.rename(before, after, (err) => {
+        })
+
+        _.merge(note, {name: data.name}) 
+      }
       return note
     })
   }
 
   onDelete(){
+
+    // 設定からデータの取得先を取得する
+    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+    let rmPath = path.join(dataPath, this.currentNote.name)
+
+    // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
+    fs.rmdir(rmPath, () => {
+    })
+
     this.notes = _.reject(this.notes, ["id", this.currentNote.id])
     if (this.notes.length > 0) this.currentNote = this.notes[0]
   }

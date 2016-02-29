@@ -816,6 +816,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _notebooks = require('../../actions/notebooks');
+
+var _notebooks2 = _interopRequireDefault(_notebooks);
+
 var _setting = require('../../actions/setting');
 
 var _setting2 = _interopRequireDefault(_setting);
@@ -897,7 +901,10 @@ var SettingDialog = function (_React$Component) {
       var focusedWindow = browserWindow.getFocusedWindow();
 
       dialog.showOpenDialog(focusedWindow, { properties: ['openDirectory', 'createDirectory'] }, function (directories) {
-        if (directories) _setting2.default.save(directories[0]);
+        if (directories) {
+          _setting2.default.save(directories[0]);
+          _notebooks2.default.fetch();
+        }
       }.bind(this));
     }
   }, {
@@ -953,7 +960,7 @@ var SettingDialog = function (_React$Component) {
 
 exports.default = (0, _connectToStores2.default)(SettingDialog);
 
-},{"../../actions/setting":6,"../../stores/browser":25,"../../stores/setting":31,"alt/utils/connectToStores":44,"material-ui/lib/dialog":201,"material-ui/lib/flat-button":204,"material-ui/lib/styles/colors":231,"material-ui/lib/text-field":252,"react":617}],14:[function(require,module,exports){
+},{"../../actions/notebooks":4,"../../actions/setting":6,"../../stores/browser":25,"../../stores/setting":31,"alt/utils/connectToStores":44,"material-ui/lib/dialog":201,"material-ui/lib/flat-button":204,"material-ui/lib/styles/colors":231,"material-ui/lib/text-field":252,"react":617}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2930,9 +2937,17 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _setting = require('../stores/setting');
+
+var _setting2 = _interopRequireDefault(_setting);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var app = remote.require('app');
+var fs = remote.require('fs');
+var path = remote.require("path");
 
 var NotebooksStore = function () {
 
@@ -2957,28 +2972,78 @@ var NotebooksStore = function () {
   _createClass(NotebooksStore, [{
     key: 'onFetch',
     value: function onFetch() {
-      console.log("NotebooksStore onFetch");
-      this.notes = [{ id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }, { id: _uuid2.default.get(), name: "プログラミング" }];
-      this.currentNote = this.notes[0];
+
+      var _this = this;
+
+      // 設定からデータの取得先を取得する
+      var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
+
+      var notesBuffer = [];
+      fs.readdir(dataPath, function (err, files) {
+
+        files.map(function (file) {
+          return path.join(dataPath, file);
+        }).filter(function (file) {
+          return !fs.statSync(file).isFile();
+        }).forEach(function (file) {
+          // データ取得先にあるディレクトリからノートブックの一覧を作成する
+          notesBuffer.push({ id: _uuid2.default.get(), name: _lodash2.default.last(file.split(path.sep)) });
+        });
+
+        _this.notes = notesBuffer;
+        _this.currentNote = _this.notes[0];
+        _this.emitChange(); // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
+      });
     }
   }, {
     key: 'onAdd',
     value: function onAdd(data) {
+
+      var _this = this;
+
+      // 設定からデータの取得先を取得する
+      var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
+      var addPath = path.join(dataPath, data.name);
+
+      // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
+      fs.mkdir(addPath, function (e) {
+        if (!e || e && e.code === 'EEXIST') {} else {}
+      });
+
       this.notes.push({ id: _uuid2.default.get(), name: data.name });
     }
   }, {
     key: 'onUpdate',
     value: function onUpdate(data) {
-      var _this = this;
+      var _this2 = this;
+
+      // 設定からデータの取得先を取得する
+      var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
 
       this.notes = _lodash2.default.map(this.notes, function (note) {
-        if (_this.currentNote.id == note.id) _lodash2.default.merge(note, { name: data.name });
+        if (_this2.currentNote.id == note.id) {
+
+          var before = path.join(dataPath, note.name);
+          var after = path.join(dataPath, data.name);
+
+          fs.rename(before, after, function (err) {});
+
+          _lodash2.default.merge(note, { name: data.name });
+        }
         return note;
       });
     }
   }, {
     key: 'onDelete',
     value: function onDelete() {
+
+      // 設定からデータの取得先を取得する
+      var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
+      var rmPath = path.join(dataPath, this.currentNote.name);
+
+      // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
+      fs.rmdir(rmPath, function () {});
+
       this.notes = _lodash2.default.reject(this.notes, ["id", this.currentNote.id]);
       if (this.notes.length > 0) this.currentNote = this.notes[0];
     }
@@ -3014,7 +3079,7 @@ var NotebooksStore = function () {
 
 exports.default = _alt2.default.createStore(NotebooksStore, 'NotebooksStore');
 
-},{"../actions/notebooks":4,"../alt":8,"../stores/helpers/uuid":28,"lodash":188}],30:[function(require,module,exports){
+},{"../actions/notebooks":4,"../alt":8,"../stores/helpers/uuid":28,"../stores/setting":31,"lodash":188}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
