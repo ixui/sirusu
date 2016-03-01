@@ -2843,6 +2843,16 @@ var ErrorsStore = function () {
     _classCallCheck(this, ErrorsStore);
 
     this.bindActions(_errors2.default);
+
+    // 他のStoreからエラーを放り込めるようにメッセージ追加処理を外部に公開する
+    // ただし、この使い方はfluxの思想から外れるため、ここ以外では使用しないこと
+    this.exportPublicMethods({
+      push: function push(message) {
+        this.state.errors.push({ id: _uuid2.default.get(), message: message });
+        this.emitChange();
+      }
+    });
+
     this.errors = [];
   }
 
@@ -2941,6 +2951,10 @@ var _setting = require('../stores/setting');
 
 var _setting2 = _interopRequireDefault(_setting);
 
+var _errors = require('../stores/errors');
+
+var _errors2 = _interopRequireDefault(_errors);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3006,8 +3020,12 @@ var NotebooksStore = function () {
       var addPath = path.join(dataPath, data.name);
 
       // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
-      fs.mkdir(addPath, function (e) {
-        if (!e || e && e.code === 'EEXIST') {} else {}
+      fs.exists(addPath, function (exists) {
+        if (!exists) {
+          fs.mkdir(addPath, function (err) {});
+        } else {
+          _errors2.default.push("同名のノートブックが既に存在しています");
+        }
       });
 
       this.notes.push({ id: _uuid2.default.get(), name: data.name });
@@ -3022,13 +3040,21 @@ var NotebooksStore = function () {
 
       this.notes = _lodash2.default.map(this.notes, function (note) {
         if (_this2.currentNote.id == note.id) {
+          (function () {
 
-          var before = path.join(dataPath, note.name);
-          var after = path.join(dataPath, data.name);
+            var before = path.join(dataPath, note.name);
+            var after = path.join(dataPath, data.name);
 
-          fs.rename(before, after, function (err) {});
+            fs.exists(after, function (exists) {
+              if (!exists) {
+                fs.rename(before, after, function (err) {});
+              } else {
+                _errors2.default.push("同名のノートブックが既に存在しています");
+              }
+            });
 
-          _lodash2.default.merge(note, { name: data.name });
+            _lodash2.default.merge(note, { name: data.name });
+          })();
         }
         return note;
       });
@@ -3079,7 +3105,7 @@ var NotebooksStore = function () {
 
 exports.default = _alt2.default.createStore(NotebooksStore, 'NotebooksStore');
 
-},{"../actions/notebooks":4,"../alt":8,"../stores/helpers/uuid":28,"../stores/setting":31,"lodash":188}],30:[function(require,module,exports){
+},{"../actions/notebooks":4,"../alt":8,"../stores/errors":27,"../stores/helpers/uuid":28,"../stores/setting":31,"lodash":188}],30:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

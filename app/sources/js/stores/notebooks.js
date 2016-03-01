@@ -3,6 +3,7 @@ import NotebooksActions from '../actions/notebooks'
 import UUID from '../stores/helpers/uuid'
 import _ from 'lodash'
 import SettingStore from '../stores/setting'
+import ErrorsStore from '../stores/errors'
 
 let app = remote.require('app')
 let fs = remote.require('fs')
@@ -60,11 +61,15 @@ class NotebooksStore {
     let addPath = path.join(dataPath, data.name)
 
     // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
-    fs.mkdir(addPath, (e) => {
-      if(!e || (e && e.code === 'EEXIST')){
+    fs.exists(addPath, function(exists){
+      if (!exists) {
+        fs.mkdir(addPath, (err) => {
+        })
       } else {
+        ErrorsStore.push("同名のノートブックが既に存在しています")
       }
     })
+
 
     this.notes.push({id: UUID.get(), name: data.name})
   }
@@ -80,7 +85,13 @@ class NotebooksStore {
         let before = path.join(dataPath, note.name)
         let after = path.join(dataPath, data.name)
 
-        fs.rename(before, after, (err) => {
+        fs.exists(after, function(exists){
+          if (!exists) {
+            fs.rename(before, after, (err) => {
+            })
+          } else {
+            ErrorsStore.push("同名のノートブックが既に存在しています")
+          }
         })
 
         _.merge(note, {name: data.name}) 
