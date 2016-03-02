@@ -30,6 +30,8 @@ class NotebooksStore {
 
     let _this = this
 
+    console.log("NotebooksStore onFetch")
+
     // 設定からデータの取得先を取得する
     let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
 
@@ -45,9 +47,9 @@ class NotebooksStore {
         notesBuffer.push({id: UUID.get(), name: _.last(file.split(path.sep))})
       })
 
-        _this.notes = notesBuffer
-        _this.currentNote = _this.notes[0]
-        _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
+      _this.notes = notesBuffer
+      _this.currentNote = _this.notes[0]
+      _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
     })
 
   }
@@ -59,19 +61,27 @@ class NotebooksStore {
     // 設定からデータの取得先を取得する
     let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
     let addPath = path.join(dataPath, data.name)
+    let pagesFilePath = path.join(addPath, "Pages.json")
 
-    // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
-    fs.exists(addPath, function(exists){
-      if (!exists) {
-        fs.mkdir(addPath, (err) => {
-        })
-      } else {
-        ErrorsStore.push("同名のノートブックが既に存在しています")
-      }
-    })
+    try{
+      // ディレクトリが存在していないことを確認する
+      fs.statSync(addPath)
+      ErrorsStore.push("同名のノートブックが既に存在しているか、データを書き込めません")
+
+    }catch(e){
+
+      fs.mkdirSync(addPath)
+
+      // 空のPage.jsonを生成する
+      fs.writeFileSync(pagesFilePath, JSON.stringify([]))
+
+      let note = {id: UUID.get(), name: data.name}
+      this.notes.push(note)
+      this.currentNote = note
+
+    }
 
 
-    this.notes.push({id: UUID.get(), name: data.name})
   }
 
   onUpdate(data){
@@ -85,16 +95,14 @@ class NotebooksStore {
         let before = path.join(dataPath, note.name)
         let after = path.join(dataPath, data.name)
 
-        fs.exists(after, function(exists){
-          if (!exists) {
-            fs.rename(before, after, (err) => {
-            })
-          } else {
-            ErrorsStore.push("同名のノートブックが既に存在しています")
-          }
-        })
-
-        _.merge(note, {name: data.name}) 
+        try{
+          fs.accessSync(after, fs.R_OK)
+          ErrorsStore.push("同名のノートブックが既に存在しています")
+        }catch(e){
+          // 正常であればフォルダがないはずなのでここでリネームする
+          fs.renameSync(before, after)
+          _.merge(note, {name: data.name}) 
+        }
       }
       return note
     })
@@ -106,12 +114,14 @@ class NotebooksStore {
     let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
     let rmPath = path.join(dataPath, this.currentNote.name)
 
-    // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
-    fs.rmdir(rmPath, () => {
-    })
+    try{
+      fs.rmdirSync(rmPath)
+      this.notes = _.reject(this.notes, ["id", this.currentNote.id])
+      if (this.notes.length > 0) this.currentNote = this.notes[0]
+    }catch(e){
+      ErrorsStore.push("データを削除できませんでした")
+    }
 
-    this.notes = _.reject(this.notes, ["id", this.currentNote.id])
-    if (this.notes.length > 0) this.currentNote = this.notes[0]
   }
 
   onSelect(data){

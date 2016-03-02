@@ -86,7 +86,6 @@ class PagesBar extends React.Component {
   // Alt Store との連結完了後に呼ばれるメソッド - 純正Reactでの componentDidMount で行う処理を記載することになるはず
   // Storeの変更が絡む処理は componentDidMount ではなく componentDidConnect でしないと変更検知が届かない
   static componentDidConnect(prop, context) {
-    PagesActions.fetch()
   }
 
   render() {

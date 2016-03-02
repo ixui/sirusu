@@ -148,6 +148,10 @@ var _alt = require('../alt');
 
 var _alt2 = _interopRequireDefault(_alt);
 
+var _pages = require('../actions/pages');
+
+var _pages2 = _interopRequireDefault(_pages);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -161,11 +165,19 @@ var NotebooksActions = function () {
     key: 'fetch',
     value: function fetch() {
       this.dispatch();
+
+      setTimeout(function () {
+        _pages2.default.fetch();
+      }, 100);
     }
   }, {
     key: 'add',
     value: function add(name) {
       this.dispatch({ name: name });
+
+      setTimeout(function () {
+        _pages2.default.fetch();
+      }, 100);
     }
   }, {
     key: 'update',
@@ -176,11 +188,19 @@ var NotebooksActions = function () {
     key: 'delete',
     value: function _delete() {
       this.dispatch();
+
+      setTimeout(function () {
+        _pages2.default.fetch();
+      }, 100);
     }
   }, {
     key: 'select',
     value: function select(note) {
       this.dispatch({ note: note });
+
+      setTimeout(function () {
+        _pages2.default.fetch();
+      }, 100);
     }
   }, {
     key: 'showNewNoteView',
@@ -209,7 +229,7 @@ var NotebooksActions = function () {
 
 exports.default = _alt2.default.createActions(NotebooksActions);
 
-},{"../alt":8}],5:[function(require,module,exports){
+},{"../actions/pages":5,"../alt":8}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2280,9 +2300,7 @@ var PagesBar = function (_React$Component) {
 
   }, {
     key: 'componentDidConnect',
-    value: function componentDidConnect(prop, context) {
-      _pages2.default.fetch();
-    }
+    value: function componentDidConnect(prop, context) {}
   }]);
 
   return PagesBar;
@@ -2989,6 +3007,8 @@ var NotebooksStore = function () {
 
       var _this = this;
 
+      console.log("NotebooksStore onFetch");
+
       // 設定からデータの取得先を取得する
       var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
 
@@ -3018,17 +3038,23 @@ var NotebooksStore = function () {
       // 設定からデータの取得先を取得する
       var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
       var addPath = path.join(dataPath, data.name);
+      var pagesFilePath = path.join(addPath, "Pages.json");
 
-      // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
-      fs.exists(addPath, function (exists) {
-        if (!exists) {
-          fs.mkdir(addPath, function (err) {});
-        } else {
-          _errors2.default.push("同名のノートブックが既に存在しています");
-        }
-      });
+      try {
+        // ディレクトリが存在していないことを確認する
+        fs.statSync(addPath);
+        _errors2.default.push("同名のノートブックが既に存在しているか、データを書き込めません");
+      } catch (e) {
 
-      this.notes.push({ id: _uuid2.default.get(), name: data.name });
+        fs.mkdirSync(addPath);
+
+        // 空のPage.jsonを生成する
+        fs.writeFileSync(pagesFilePath, JSON.stringify([]));
+
+        var note = { id: _uuid2.default.get(), name: data.name };
+        this.notes.push(note);
+        this.currentNote = note;
+      }
     }
   }, {
     key: 'onUpdate',
@@ -3040,21 +3066,18 @@ var NotebooksStore = function () {
 
       this.notes = _lodash2.default.map(this.notes, function (note) {
         if (_this2.currentNote.id == note.id) {
-          (function () {
 
-            var before = path.join(dataPath, note.name);
-            var after = path.join(dataPath, data.name);
+          var before = path.join(dataPath, note.name);
+          var after = path.join(dataPath, data.name);
 
-            fs.exists(after, function (exists) {
-              if (!exists) {
-                fs.rename(before, after, function (err) {});
-              } else {
-                _errors2.default.push("同名のノートブックが既に存在しています");
-              }
-            });
-
+          try {
+            fs.accessSync(after, fs.R_OK);
+            _errors2.default.push("同名のノートブックが既に存在しています");
+          } catch (e) {
+            // 正常であればフォルダがないはずなのでここでリネームする
+            fs.renameSync(before, after);
             _lodash2.default.merge(note, { name: data.name });
-          })();
+          }
         }
         return note;
       });
@@ -3067,11 +3090,13 @@ var NotebooksStore = function () {
       var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
       var rmPath = path.join(dataPath, this.currentNote.name);
 
-      // ToDo: stateとディレクトリの状態の同期をきちんととるようにする
-      fs.rmdir(rmPath, function () {});
-
-      this.notes = _lodash2.default.reject(this.notes, ["id", this.currentNote.id]);
-      if (this.notes.length > 0) this.currentNote = this.notes[0];
+      try {
+        fs.rmdirSync(rmPath);
+        this.notes = _lodash2.default.reject(this.notes, ["id", this.currentNote.id]);
+        if (this.notes.length > 0) this.currentNote = this.notes[0];
+      } catch (e) {
+        _errors2.default.push("データを削除できませんでした");
+      }
     }
   }, {
     key: 'onSelect',
@@ -3126,9 +3151,21 @@ var _uuid = require('../stores/helpers/uuid');
 
 var _uuid2 = _interopRequireDefault(_uuid);
 
+var _setting = require('../stores/setting');
+
+var _setting2 = _interopRequireDefault(_setting);
+
+var _notebooks = require('../stores/notebooks');
+
+var _notebooks2 = _interopRequireDefault(_notebooks);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var app = remote.require('app');
+var fs = remote.require('fs');
+var path = remote.require("path");
 
 var PagesStore = function () {
 
@@ -3146,8 +3183,36 @@ var PagesStore = function () {
   _createClass(PagesStore, [{
     key: 'onFetch',
     value: function onFetch() {
+      this.waitFor([_notebooks2.default, _setting2.default]);
+
       console.log("PagesStore onFetch");
-      this.pages = [{ id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }, { id: _uuid2.default.get(), title: "javascript", subtitle: "文法まとめ" }];
+
+      // 設定からデータの取得先を取得する
+      var dataPath = _setting2.default.getState().dataPath || app.getPath('userData');
+      var selectedNote = _notebooks2.default.getState().currentNote;
+
+      if (selectedNote == null) {
+        this.pages = [];
+        return;
+      }
+
+      var pagesFilePath = path.join(dataPath, selectedNote.name, "Pages.json");
+      var pages = JSON.parse(fs.readFileSync(pagesFilePath, 'utf8'));
+
+      this.pages = pages;
+
+      // this.pages = [
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //     {id: UUID.get(), title: "javascript", subtitle: "文法まとめ"},
+      //   ]
     }
   }]);
 
@@ -3156,7 +3221,7 @@ var PagesStore = function () {
 
 exports.default = _alt2.default.createStore(PagesStore, 'PagesStore');
 
-},{"../actions/pages":5,"../alt":8,"../stores/helpers/uuid":28}],31:[function(require,module,exports){
+},{"../actions/pages":5,"../alt":8,"../stores/helpers/uuid":28,"../stores/notebooks":29,"../stores/setting":31}],31:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

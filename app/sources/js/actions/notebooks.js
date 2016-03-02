@@ -1,13 +1,22 @@
 import alt from '../alt'
+import PagesActions from '../actions/pages'
 
 class NotebooksActions {
 
   fetch(){
     this.dispatch()
+
+    setTimeout(() => {
+      PagesActions.fetch()
+    }, 100)
   }
 
   add(name){
     this.dispatch({name: name})
+
+    setTimeout(() => {
+      PagesActions.fetch()
+    }, 100)
   }
 
   update(name){
@@ -16,10 +25,18 @@ class NotebooksActions {
 
   delete(){
     this.dispatch()
+
+    setTimeout(() => {
+      PagesActions.fetch()
+    }, 100)
   }
 
   select(note){
     this.dispatch({note: note})
+
+    setTimeout(() => {
+      PagesActions.fetch()
+    }, 100)
   }
 
   showNewNoteView(){
