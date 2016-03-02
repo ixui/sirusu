@@ -21,6 +21,8 @@ import ToolbarGroup from 'material-ui/lib/toolbar/toolbar-group'
 import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
+import PageList from '../components/list/page.react'
+
 
 const textfieldStyle = {
   inputStyle: {
@@ -88,6 +90,10 @@ class PagesBar extends React.Component {
   static componentDidConnect(prop, context) {
   }
 
+  addPage() {
+    PagesActions.showNewPageView()
+  }
+
   render() {
 
     let dynamicListStyle = _.merge(listStyle.style, {height: this.props.height - 100})
@@ -108,15 +114,17 @@ class PagesBar extends React.Component {
                  fullWidth className="search-query" />
           <br/>
 
-          <List subheader="Pages" style={dynamicListStyle} subheaderStyle={listStyle.subheaderStyle}>
-            {pages}
-          </List>
+          <PageList/>
         </Flex>
 
         <Fixed>
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton iconStyle={toolbarStyle.iconStyle} iconClassName="material-icons" tooltip="Pageの追加" tooltipPosition="top-right">add</IconButton>
+              <IconButton onClick={this.addPage.bind(this)} 
+                          iconStyle={toolbarStyle.iconStyle} 
+                          iconClassName="material-icons" 
+                          tooltip="Pageの追加" 
+                          tooltipPosition="top-right">add</IconButton>
             </ToolbarGroup>
           </Toolbar>
         </Fixed>
