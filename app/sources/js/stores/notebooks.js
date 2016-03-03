@@ -33,7 +33,15 @@ class NotebooksStore {
     console.log("NotebooksStore onFetch")
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
+
+    try{
+      // ディレクトリが存在しているか確認する
+      fs.statSync(dataPath)
+    }catch(e){
+      // なければ作る
+      fs.mkdirSync(dataPath)
+    }
 
     let notesBuffer = []
     fs.readdir(dataPath, (err, files) => {
@@ -59,7 +67,7 @@ class NotebooksStore {
     let _this = this
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
     let addPath = path.join(dataPath, data.name)
     let pagesFilePath = path.join(addPath, "Pages.json")
 
@@ -87,7 +95,7 @@ class NotebooksStore {
   onUpdate(data){
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
 
     this.notes = _.map(this.notes, (note) => {
       if (this.currentNote.id == note.id) {
@@ -111,7 +119,7 @@ class NotebooksStore {
   onDelete(){
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || app.getPath('userData')
+    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
     let rmPath = path.join(dataPath, this.currentNote.name)
 
     try{
