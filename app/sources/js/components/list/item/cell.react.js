@@ -3,7 +3,7 @@ import React from 'react'
 
 // Alt - Flux
 // Actions
-import CellsActions  from '../actions/cells'
+import CellsActions  from '../../../actions/cells'
 
 // Design
 import Card from 'material-ui/lib/card/card'
@@ -15,7 +15,7 @@ import TextField from 'material-ui/lib/text-field'
 import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
-import Spacer from '../components/helpers/spacer.react'
+import Spacer from '../../../components/helpers/spacer.react'
 
 
 const cardStyle = {
@@ -62,7 +62,7 @@ const cardStyle = {
 }
 
 
-class EditorCell extends React.Component {
+class CellItem extends React.Component {
 
   toMarkdown() {
     CellsActions.toMarkdown(this.props.cell)
@@ -122,4 +122,4 @@ class EditorCell extends React.Component {
 
 }
 
-export default EditorCell
+export default CellItem

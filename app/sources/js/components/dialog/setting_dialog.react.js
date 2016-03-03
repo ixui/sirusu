@@ -6,6 +6,7 @@ import React from 'react'
 // Actions
 import NotebooksActions from '../../actions/notebooks'
 import SettingActions from '../../actions/setting'
+import ErrorsActions from '../../actions/errors'
 // Stores
 import SettingStore from '../../stores/setting'
 import BrowserStore from '../../stores/browser'
@@ -61,6 +62,13 @@ class SettingDialog extends React.Component {
   }
 
   hideSettingView() {
+
+    let dataPath = this.refs.dataPath.getValue()
+    if (!dataPath){
+      ErrorsActions.push("データの保存先を選択してください")
+      return
+    }
+
     SettingActions.hideSettingView()
   }
 
@@ -68,7 +76,7 @@ class SettingDialog extends React.Component {
 
     let actions = [
       <FlatButton
-        label="Close"
+        label="OK"
         primary={true}
         onClick={this.hideSettingView.bind(this)}></FlatButton>,
     ]
@@ -87,6 +95,7 @@ class SettingDialog extends React.Component {
                underlineFocusStyle={settingFieldStyle.underlineFocusStyle}
                onClick={this.showDirectorySelectDialog.bind(this)}
                value={this.props.dataPath} 
+               ref="dataPath"
                fullWidth />
         
       </Dialog>

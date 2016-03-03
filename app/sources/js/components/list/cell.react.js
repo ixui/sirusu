@@ -5,11 +5,11 @@ import {Layout, Flex, Fixed} from 'react-layout-pane'
 
 // Alt - Flux
 // Actions
-import CellsActions  from '../actions/cells'
-import ErrorsActions from '../actions/errors'
+import CellsActions  from '../../actions/cells'
+import ErrorsActions from '../../actions/errors'
 // Stores
-import CellsStore from '../stores/cells'
-import BrowserStore from '../stores/browser'
+import CellsStore from '../../stores/cells'
+import BrowserStore from '../../stores/browser'
 
 // Design
 import Toolbar from 'material-ui/lib/toolbar/toolbar'
@@ -24,8 +24,8 @@ import TextField from 'material-ui/lib/text-field'
 import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
-import CellList from '../components/list/cell.react'
-import Spacer from '../components/helpers/spacer.react'
+import CellItem from '../../components/list/item/cell.react'
+import Spacer from '../../components/helpers/spacer.react'
 
 const editorStyle = {
   style: {
@@ -44,7 +44,7 @@ const toolbarStyle = {
   },
 }
 
-class Editor extends React.Component {
+class CellList extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
   static getStores() {
@@ -62,39 +62,27 @@ class Editor extends React.Component {
     CellsActions.fetch()
   }
 
-  addCell() {
-    CellsActions.add()
-  }
-
   render() {
 
     let dynamicEditorStyle = _.merge(editorStyle.style, {height: this.props.height - 100})
 
+    let cells = this.props.cells.map ((cell) => {
+      return (
+        <div key={cell.id}>
+          <CellItem cell={cell} />
+        </div>
+      )
+    })
+
     return (
 
-      <Layout type="column">
-
-        <Flex style={dynamicEditorStyle}>
-          <CellList/>
-        </Flex>
-
-        <Fixed>
-          <Toolbar style={toolbarStyle.style}>
-            <ToolbarGroup firstChild={true} float="left">
-              <IconButton onClick={this.addCell.bind(this)} 
-                          iconStyle={toolbarStyle.iconStyle} 
-                          iconClassName="material-icons" 
-                          tooltip="セルの追加" 
-                          tooltipPosition="top-right">add</IconButton>
-            </ToolbarGroup>
-          </Toolbar>
-        </Fixed>
-
-     </Layout>
+      <div>
+        {cells}
+      </div>
 
   	)
   }
 
 }
 
-export default connectToStores(Editor)
+export default connectToStores(CellList)

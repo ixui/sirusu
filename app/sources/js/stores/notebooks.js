@@ -5,7 +5,6 @@ import _ from 'lodash'
 import SettingStore from '../stores/setting'
 import ErrorsStore from '../stores/errors'
 
-let app = remote.require('app')
 let fs = remote.require('fs')
 let path = remote.require("path")
 
@@ -33,14 +32,15 @@ class NotebooksStore {
     console.log("NotebooksStore onFetch")
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
+    let dataPath = SettingStore.getState().dataPath
 
+    if (!dataPath) return
     try{
-      // ディレクトリが存在しているか確認する
+      // ディレクトリが存在していることを確認する
       fs.statSync(dataPath)
     }catch(e){
-      // なければ作る
-      fs.mkdirSync(dataPath)
+      ErrorsStore.push("データの保存先が見つかりません¥n設定を確認してください")
+      return
     }
 
     let notesBuffer = []
@@ -67,7 +67,7 @@ class NotebooksStore {
     let _this = this
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
+    let dataPath = SettingStore.getState().dataPath
     let addPath = path.join(dataPath, data.name)
     let pagesFilePath = path.join(addPath, "Pages.json")
 
@@ -95,7 +95,7 @@ class NotebooksStore {
   onUpdate(data){
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
+    let dataPath = SettingStore.getState().dataPath
 
     this.notes = _.map(this.notes, (note) => {
       if (this.currentNote.id == note.id) {
@@ -119,7 +119,7 @@ class NotebooksStore {
   onDelete(){
 
     // 設定からデータの取得先を取得する
-    let dataPath = SettingStore.getState().dataPath || path.join(app.getPath('userData'), 'notebooks')
+    let dataPath = SettingStore.getState().dataPath
     let rmPath = path.join(dataPath, this.currentNote.name)
 
     try{

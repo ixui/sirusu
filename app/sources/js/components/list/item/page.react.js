@@ -30,7 +30,7 @@ const iconButtonStyle = {
     padding:       2,
     width:         14,
     height:        14,
-    backgroundColor: Colors.cyan700,
+    backgroundColor: Colors.transparent,
   },
   iconStyle: {
     fontSize:      '12px',

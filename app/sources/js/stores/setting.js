@@ -9,8 +9,8 @@ class SettingStore {
   // **************************************************** 
   constructor() {
     this.bindActions(SettingActions)
-    this.visibleSettingView = false
     this.dataPath = localStorage.getItem('dataPath') || ''
+    this.visibleSettingView = (this.dataPath) ? false : true
   }
 
   onShowSettingView() {

@@ -33,13 +33,6 @@ const listStyle = {
     overflowY       : 'auto',
     height          : '800px',
   },
-  subheaderStyle: {
-    backgroundColor: Colors.cyan700,
-    color          : Colors.grey100,
-    paddingTop     : '1px',
-    paddingBottom  : '1px',
-    fontSize       : '24px',
-  },
 }
 
 class PageList extends React.Component {
@@ -77,7 +70,7 @@ class PageList extends React.Component {
       <div>
         <NewPageDialog/>
         <EditPageDialog/>
-        <List subheader="Pages" style={dynamicListStyle} subheaderStyle={listStyle.subheaderStyle}>
+        <List style={dynamicListStyle}>
           {pages}
         </List>
       </div>

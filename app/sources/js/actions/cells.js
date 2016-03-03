@@ -6,6 +6,10 @@ class CellsActions {
     this.dispatch()
   }
 
+  add(){
+    this.dispatch({})
+  }
+
   toMarkdown(cell){
     this.dispatch({id: cell.id})
   }
