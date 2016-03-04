@@ -76,7 +76,7 @@ class PagesStore {
   onUpdate(data){
 
     this.pages = _.map(this.pages, (page) => {
-      if (this.currentPage.id == page.id) _.merge(page, {title: data.subtitle, title: data.subtitle}) 
+      if (this.currentPage.id == page.id) _.merge(page, {title: data.title, subtitle: data.subtitle}) 
       return page
     })
 

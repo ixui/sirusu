@@ -19,7 +19,7 @@ class PagesActions {
     }, 100)
   }
 
-  update(name){
+  update(title, subtitle){
     this.dispatch({title: title, subtitle: subtitle})
   }
 
