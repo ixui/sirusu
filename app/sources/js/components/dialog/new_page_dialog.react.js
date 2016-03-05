@@ -5,6 +5,7 @@ import React from 'react'
 // Alt - Flux
 // Actions
 import PagesActions from '../../actions/pages'
+import ErrorsActions from '../../actions/errors'
 // Stores
 import PagesStore from '../../stores/pages'
 import BrowserStore from '../../stores/browser'
@@ -48,7 +49,20 @@ class AddNewPageDialog extends React.Component {
   addNewPage() {
     let title = this.refs.title.getValue()
     let subtitle = this.refs.subtitle.getValue()
-    PagesActions.add(title, subtitle)
+    let note = this.refs.note.getValue()
+    let tag = this.refs.tag.getValue()
+
+    if (title == ""){
+      ErrorsActions.push("タイトルを入力してください")
+      return
+    }
+
+    if (note == ""){
+      ErrorsActions.push("所属するノートを選択、もしくは入力してください")
+      return
+    }
+
+    PagesActions.add(title, subtitle, note, tag)
     PagesActions.hideNewPageView()
   }
 
@@ -60,35 +74,49 @@ class AddNewPageDialog extends React.Component {
 
     let actions = [
       <FlatButton
-        label="Add"
+        label="追加する"
         primary={true}
         onClick={this.addNewPage.bind(this)}></FlatButton>,
       <FlatButton
-        label="Cancel"
+        label="キャンセル"
         primary={true}
         onClick={this.hideNewPageView.bind(this)}></FlatButton>,
     ]
 
     return (
 
-      <Dialog title="ADD Page"
+      <Dialog title="新しくページを作成する"
         actions={actions}
         modal={true}
         open={this.props.visibleNewPageView}
         onRequestClose={this.hideNewPageView.bind(this)}>
 
-        <TextField hintText="　ページのタイトル　" 
+        <TextField hintText="タイトル" 
                inputStyle={inputFieldStyle.inputStyle}
                underlineStyle={inputFieldStyle.underlineStyle}
                underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
                ref="title"
                fullWidth />
 
-        <TextField hintText="　ページの説明　" 
+        <TextField hintText="サブタイトル" 
                inputStyle={inputFieldStyle.inputStyle}
                underlineStyle={inputFieldStyle.underlineStyle}
                underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
                ref="subtitle"
+               fullWidth />
+
+        <TextField hintText="所属ノート" 
+               inputStyle={inputFieldStyle.inputStyle}
+               underlineStyle={inputFieldStyle.underlineStyle}
+               underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
+               ref="note"
+               fullWidth />
+
+        <TextField hintText="タグ" 
+               inputStyle={inputFieldStyle.inputStyle}
+               underlineStyle={inputFieldStyle.underlineStyle}
+               underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
+               ref="tag"
                fullWidth />
         
       </Dialog>

@@ -60,7 +60,7 @@ class PageItem extends React.Component {
                   iconStyle={iconButtonStyle.iconStyle} 
                   iconClassName="material-icons" 
                   tooltip="Edit" 
-                  tooltipPosition="top-left">settings</IconButton>
+                  tooltipPosition="bottom-left">settings</IconButton>
     );
 
     return (

@@ -18,8 +18,6 @@ import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
 import NoteItem from '../../components/list/item/note.react'
-import NewNoteDialog from '../../components/dialog/new_note_dialog.react'
-import EditNoteDialog from '../../components/dialog/edit_note_dialog.react'
 
 // ******************************************************************
 // Styles
@@ -77,8 +75,6 @@ class NoteList extends React.Component {
     return (
 
       <div>
-        <NewNoteDialog/>
-        <EditNoteDialog/>
         <List subheader="Notes" style={dynamicListStyle} subheaderStyle={listStyle.subheaderStyle}>
           {notes}
         </List>

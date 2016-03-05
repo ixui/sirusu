@@ -1,4 +1,5 @@
 import alt from '../alt'
+import NotebooksActions from '../actions/notebooks'
 import CellsActions from '../actions/cells'
 
 class PagesActions {
@@ -8,27 +9,34 @@ class PagesActions {
 
     setTimeout(() => {
       CellsActions.fetch()
-    }, 100)
+    }, 500)
   }
 
-  add(title, subtitle){
-    this.dispatch({title: title, subtitle: subtitle})
+  add(title, subtitle, note, tag){
+    this.dispatch({title: title, subtitle: subtitle, note: note, tag: tag})
 
     setTimeout(() => {
+      NotebooksActions.fetch()
       CellsActions.fetch()
-    }, 100)
+    }, 500)
   }
 
   update(title, subtitle){
-    this.dispatch({title: title, subtitle: subtitle})
+    this.dispatch({title: title, subtitle: subtitle, note: note, tag: tag})
+
+    setTimeout(() => {
+      NotebooksActions.fetch()
+      CellsActions.fetch()
+    }, 500)
   }
 
   delete(){
     this.dispatch()
 
     setTimeout(() => {
+      NotebooksActions.fetch()
       CellsActions.fetch()
-    }, 100)
+    }, 500)
   }
 
   select(page){
@@ -36,7 +44,7 @@ class PagesActions {
 
     setTimeout(() => {
       CellsActions.fetch()
-    }, 100)
+    }, 500)
   }
 
   showNewPageView(){

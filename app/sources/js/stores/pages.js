@@ -27,80 +27,121 @@ class PagesStore {
   onFetch() {
     this.waitFor([NotebooksStore, SettingStore])
 
+    let _this = this
+
     console.log("PagesStore onFetch")
 
     // 設定からデータの取得先を取得する
     let dataPath = SettingStore.getState().dataPath
-    let selectedNote = NotebooksStore.getState().currentNote
 
+    if (!dataPath) return
+    try{
+      // ディレクトリが存在していることを確認する
+      fs.statSync(dataPath)
+    }catch(e){
+      ErrorsStore.push("データの保存先が見つかりません¥n設定を確認してください")
+      return
+    }
+
+    // 選択されているノートを取得する - とれなければ0件データを返す
+    let selectedNote = NotebooksStore.getState().currentNote
     if (selectedNote == null) {
       this.pages = []
       return
     }
 
-    let pagesFilePath = path.join(dataPath, selectedNote.name, "Pages.json")
-    let pages = JSON.parse(fs.readFileSync(pagesFilePath, 'utf8'));
+    // データ保存先直下のファイルを開き、選択されているノートと一致するページを抽出する
+    let pagesBuffer = []
+    fs.readdir(dataPath, (err, files) => {
 
-    this.pages = pages
-    this.currentPage = pages[0]
+      files.map(file => {
+          return path.join(dataPath, file)
+      }).filter(file => {
+          return fs.statSync(file).isFile();
+      }).filter(file => {
+          return path.extname(file) == ".page";
+      }).forEach(file => {
+        // データ取得先にあるディレクトリからノートブックの一覧を作成する
+        let page = JSON.parse(fs.readFileSync(file, 'utf8'));
+        if (page.note == selectedNote.name) {
+          pagesBuffer.push(page)
+        }
+      })
+
+      _this.pages = pagesBuffer
+      _this.currentPage = _this.pages[0]
+      _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
+
+    })
 
   }
 
   onAdd(data){
 
-    let page = {id: UUID.get(), title: data.title, subtitle: data.subtitle}
+    let page = {id: UUID.get(), 
+                title: data.title, 
+                subtitle: data.subtitle, 
+                note: data.note, 
+                tag: data.tag}
     this.pages.push(page)
-    this.currentPage = this.pages[0]
+    this.currentPage = page
 
-    // Page.json を生成 ************************************************************
+    // pageファイル を生成 ************************************************************
     let dataPath = SettingStore.getState().dataPath
-    let selectedNote = NotebooksStore.getState().currentNote
-    let pagesFilePath = path.join(dataPath, selectedNote.name, "Pages.json")
-    fs.writeFileSync(pagesFilePath, JSON.stringify(this.pages))
+    let pageFilePath = path.join(dataPath, this.currentPage.id + ".page")
+    fs.writeFileSync(pageFilePath, JSON.stringify(this.currentPage))
 
     // Cellsディレクトリがなければ作成 ************************************************
-    let cellsDirPath = path.join(dataPath, selectedNote.name, "Cells")
+    let cellsDirPath = path.join(dataPath, "Cells")
     try{
       // ディレクトリが存在していないことを確認する 
       fs.statSync(cellsDirPath)
     }catch(e){
+      // なければ作成する
       fs.mkdirSync(cellsDirPath)
     }
 
     // データ格納用のファイルを用意する ************************************************
-    let cellsFilePath = path.join(cellsDirPath, page.id+".json")
+    let cellsFilePath = path.join(cellsDirPath, this.currentPage.id + ".cells")
     fs.writeFileSync(cellsFilePath, JSON.stringify([]))
 
   }
 
   onUpdate(data){
 
+    // stateを更新
     this.pages = _.map(this.pages, (page) => {
-      if (this.currentPage.id == page.id) _.merge(page, {title: data.title, subtitle: data.subtitle}) 
+      if (this.currentPage.id == page.id) {
+        _.merge(page, {title: data.title, 
+                       subtitle: data.subtitle, 
+                       note: data.note, 
+                       tag: data.tag}) 
+        this.currentPage = page
+      }
       return page
     })
 
+    // 
     let dataPath = SettingStore.getState().dataPath
-    let selectedNote = NotebooksStore.getState().currentNote
-    let pagesFilePath = path.join(dataPath, selectedNote.name, "Pages.json")
-    fs.writeFileSync(pagesFilePath, JSON.stringify(this.pages))
+    let pageFilePath = path.join(dataPath, this.currentPage.id + ".page")
+    fs.writeFileSync(pageFilePath, JSON.stringify(this.currentPage))
 
   }
 
   onDelete(){
 
-    let id = this.currentPage.id
-    this.pages = _.reject(this.pages, ["id", id])
+    this.pages = _.reject(this.pages, ["id", this.currentPage.id])
 
-    // Page.json を更新 ************************************************************
+    // pageファイルを削除 ************************************************************
     let dataPath = SettingStore.getState().dataPath
-    let selectedNote = NotebooksStore.getState().currentNote
-    let pagesFilePath = path.join(dataPath, selectedNote.name, "Pages.json")
-    fs.writeFileSync(pagesFilePath, JSON.stringify(this.pages))
+    let pageFilePath = path.join(dataPath, this.currentPage.id + ".page")
+    fs.unlinkSync(pageFilePath)
 
     // データ格納用のファイルを削除する ************************************************
-    let cellsFilePath = path.join(dataPath, selectedNote.name, "Cells", id+".json")
+    let cellsFilePath = path.join(dataPath, "Cells", this.currentPage.id　+　".cells")
     fs.unlinkSync(cellsFilePath)
+
+    this.currentPage = this.pages[0]
 
   }
 

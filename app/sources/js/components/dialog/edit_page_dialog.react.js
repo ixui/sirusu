@@ -5,6 +5,7 @@ import React from 'react'
 // Alt - Flux
 // Actions
 import PagesActions from '../../actions/pages'
+import ErrorsActions from '../../actions/errors'
 // Stores
 import PagesStore from '../../stores/pages'
 import BrowserStore from '../../stores/browser'
@@ -48,7 +49,20 @@ class EditPageDialog extends React.Component {
   updatePage() {
     let title = this.refs.title.getValue()
     let subtitle = this.refs.subtitle.getValue()
-    PagesActions.update(title, subtitle)
+    let note = this.refs.note.getValue()
+    let tag = this.refs.tag.getValue()
+
+    if (title == ""){
+      ErrorsActions.push("タイトルを入力してください")
+      return
+    }
+
+    if (note == ""){
+      ErrorsActions.push("所属するノートを選択、もしくは入力してください")
+      return
+    }
+
+    PagesActions.update(title, subtitle, note, tag)
     PagesActions.hideEditPageView()
   }
 
@@ -65,29 +79,31 @@ class EditPageDialog extends React.Component {
 
     let actions = [
       <FlatButton
-        label="Update"
+        label="変更する"
         primary={true}
         onClick={this.updatePage.bind(this)}></FlatButton>,
       <FlatButton
-        label="Delete"
+        label="削除する"
         onClick={this.deletePage.bind(this)}></FlatButton>,
       <FlatButton
-        label="Cancel"
+        label="キャンセル"
         onClick={this.hideEditPageView.bind(this)}></FlatButton>,
     ]
 
     let title = this.props.currentPage ? this.props.currentPage.title : ""
     let subtitle = this.props.currentPage ? this.props.currentPage.subtitle : ""
+    let note = this.props.currentPage ? this.props.currentPage.note : ""
+    let tag = this.props.currentPage ? this.props.currentPage.tag : ""
 
     return (
 
-      <Dialog title="Edit Page"
+      <Dialog title="ページのタイトルを編集する"
         actions={actions}
         modal={true}
         open={this.props.visibleEditPageView}
         onRequestClose={this.hideEditPageView.bind(this)}>
 
-        <TextField hintText="　ページのタイトル　" 
+        <TextField hintText="タイトル" 
                inputStyle={inputFieldStyle.inputStyle}
                underlineStyle={inputFieldStyle.underlineStyle}
                underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
@@ -95,12 +111,28 @@ class EditPageDialog extends React.Component {
                defaultValue={title}
                fullWidth />
 
-        <TextField hintText="　ページの説明　" 
+        <TextField hintText="サブタイトル" 
                inputStyle={inputFieldStyle.inputStyle}
                underlineStyle={inputFieldStyle.underlineStyle}
                underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
                ref="subtitle"
                defaultValue={subtitle}
+               fullWidth />
+
+        <TextField hintText="所属ノート" 
+               inputStyle={inputFieldStyle.inputStyle}
+               underlineStyle={inputFieldStyle.underlineStyle}
+               underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
+               ref="note"
+               defaultValue={note}
+               fullWidth />
+
+        <TextField hintText="タグ" 
+               inputStyle={inputFieldStyle.inputStyle}
+               underlineStyle={inputFieldStyle.underlineStyle}
+               underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
+               ref="tag"
+               defaultValue={tag}
                fullWidth />
         
       </Dialog>

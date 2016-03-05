@@ -55,10 +55,6 @@ const toolbarStyle = {
 
 class SideBar extends React.Component {
 
-  addNote() {
-    NotebooksActions.showNewNoteView()
-  }
-
   showSettingView() {
     SettingActions.showSettingView()
   }
@@ -86,11 +82,6 @@ class SideBar extends React.Component {
         <Fixed>
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="left">
-              <IconButton onClick={this.addNote.bind(this)} 
-                          iconStyle={toolbarStyle.iconStyle} 
-                          iconClassName="material-icons" 
-                          tooltip="Noteの追加" 
-                          tooltipPosition="top-right">add</IconButton>
               <IconButton onClick={this.showSettingView.bind(this)} 
                           iconStyle={toolbarStyle.iconStyle} 
                           iconClassName="material-icons" 

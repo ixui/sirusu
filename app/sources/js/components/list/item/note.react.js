@@ -47,31 +47,16 @@ class NoteItem extends React.Component {
     NotebooksActions.select(this.props.note)
   }
 
-  editNote() {
-    NotebooksActions.select(this.props.note)
-    NotebooksActions.showEditNoteView()
-  }
-
   render() {
 
     let note = this.props.note
     let noteName = this.props.selected ? "・" + note.name : "　" + note.name
 
-    const iconButton = (
-      <IconButton onClick={this.editNote.bind(this)} 
-                  style={iconButtonStyle.style}
-                  iconStyle={iconButtonStyle.iconStyle} 
-                  iconClassName="material-icons" 
-                  tooltip="Edit" 
-                  tooltipPosition="top-left">settings</IconButton>
-    );
-
     return (
       <ListItem onClick={this.selectNote.bind(this)} 
                 style={listItemStyle.style}
                 innerDivStyle={listItemStyle.innerDivStyle} 
-                primaryText={noteName} 
-                rightIconButton={iconButton}/>
+                primaryText={noteName} />
     )
 
   }
