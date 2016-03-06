@@ -7,6 +7,7 @@ import React from 'react'
 import PagesActions from '../../actions/pages'
 import ErrorsActions from '../../actions/errors'
 // Stores
+import NotebooksStore from '../../stores/notebooks'
 import PagesStore from '../../stores/pages'
 import BrowserStore from '../../stores/browser'
 
@@ -15,6 +16,7 @@ import TextField from 'material-ui/lib/text-field'
 import Colors from 'material-ui/lib/styles/colors'
 import Dialog from 'material-ui/lib/dialog'
 import FlatButton from 'material-ui/lib/flat-button'
+import AutoComplete from 'material-ui/lib/auto-complete'
 
 
 // ******************************************************************
@@ -38,12 +40,12 @@ class AddNewPageDialog extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
 	static getStores() {
-    return [PagesStore, BrowserStore]
+    return [NotebooksStore, PagesStore, BrowserStore]
   }
 
   // Alt を使用した場合の Props の生成ルール - ここで返す結果がPropsに設定される
   static getPropsFromStores() {
-    return _.merge(PagesStore.getState(), BrowserStore.getState()) 
+    return _.merge(NotebooksStore.getState(), PagesStore.getState(), BrowserStore.getState()) 
   }  
 
   addNewPage() {
@@ -71,6 +73,10 @@ class AddNewPageDialog extends React.Component {
   }
 
   render() {
+
+    let notes = this.props.notes.map ((note, index) => {
+      return note.name
+    }) 
 
     let actions = [
       <FlatButton
@@ -105,10 +111,13 @@ class AddNewPageDialog extends React.Component {
                ref="subtitle"
                fullWidth />
 
-        <TextField hintText="所属ノート" 
+        <AutoComplete hintText="所属ノート" 
                inputStyle={inputFieldStyle.inputStyle}
                underlineStyle={inputFieldStyle.underlineStyle}
                underlineFocusStyle={inputFieldStyle.underlineFocusStyle}
+               filter={AutoComplete.noFilter}
+               triggerUpdateOnFocus={true}
+               dataSource={notes}
                ref="note"
                fullWidth />
 

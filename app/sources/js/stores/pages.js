@@ -4,6 +4,7 @@ import PagesActions from '../actions/pages'
 import UUID from '../stores/helpers/uuid'
 import SettingStore from '../stores/setting'
 import NotebooksStore from '../stores/notebooks'
+import TagsStore from '../stores/tags'
 
 let fs = remote.require('fs')
 let path = remote.require("path")
@@ -25,7 +26,7 @@ class PagesStore {
   }
 
   onFetch() {
-    this.waitFor([NotebooksStore, SettingStore])
+    this.waitFor([NotebooksStore, TagsStore, SettingStore])
 
     let _this = this
 
@@ -43,9 +44,10 @@ class PagesStore {
       return
     }
 
-    // 選択されているノートを取得する - とれなければ0件データを返す
+    // 選択されているノートとタグを取得する - 両方とれなければ0件データを返す
     let selectedNote = NotebooksStore.getState().currentNote
-    if (selectedNote == null) {
+    let selectedTag = TagsStore.getState().currentTag
+    if (selectedNote == null && selectedTag == null) {
       this.pages = []
       return
     }
@@ -63,9 +65,19 @@ class PagesStore {
       }).forEach(file => {
         // データ取得先にあるディレクトリからノートブックの一覧を作成する
         let page = JSON.parse(fs.readFileSync(file, 'utf8'));
-        if (page.note == selectedNote.name) {
-          pagesBuffer.push(page)
+
+        if (selectedNote && page.note) {
+          if (page.note == selectedNote.name) {
+            pagesBuffer.push(page)
+          }
         }
+
+        if (selectedTag && page.tag) {
+          if (page.tag.indexOf(selectedTag.name) > -1) {
+            pagesBuffer.push(page)
+          }
+        }
+
       })
 
       _this.pages = pagesBuffer

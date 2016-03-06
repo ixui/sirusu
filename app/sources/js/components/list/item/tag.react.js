@@ -42,27 +42,27 @@ const iconButtonStyle = {
   },
 }
 
-class NoteItem extends React.Component {
+class TagItem extends React.Component {
 
-  selectNote() {
-    TagsActions.select(null)
-    NotebooksActions.select(this.props.note)
+  selectTag() {
+    NotebooksActions.select(null)
+    TagsActions.select(this.props.tag)
   }
 
   render() {
 
-    let note = this.props.note
-    let noteName = this.props.selected ? "・" + note.name : "　" + note.name
+    let tag = this.props.tag
+    let tagName = this.props.selected ? "・" + tag.name : "　" + tag.name
 
     return (
-      <ListItem onClick={this.selectNote.bind(this)} 
+      <ListItem onClick={this.selectTag.bind(this)} 
                 style={listItemStyle.style}
                 innerDivStyle={listItemStyle.innerDivStyle} 
-                primaryText={noteName} />
+                primaryText={tagName} />
     )
 
   }
 
 }
 
-export default NoteItem
+export default TagItem

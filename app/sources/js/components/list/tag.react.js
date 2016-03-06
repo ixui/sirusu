@@ -17,6 +17,8 @@ import ListItem from 'material-ui/lib/lists/list-item'
 import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
+import TagItem from '../../components/list/item/tag.react'
+
 // ******************************************************************
 // Styles
 // ******************************************************************
@@ -51,15 +53,6 @@ const listIconStyle = {
   },
 }
 
-const listItemStyle = {
-  innerDivStyle: {
-    color          : Colors.grey100,
-    paddingTop     : '1px',
-    paddingBottom  : '1px',
-    fontSize       : '12px',
-  },
-}
-
 class TagList extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
@@ -83,8 +76,11 @@ class TagList extends React.Component {
     let dynamicListStyle = _.merge(listStyle.style, {height: (this.props.height - 100) / 2})
 
     let tags = this.props.tags.map((tag, index) => {
+
+      let selected = this.props.currentTag ? (this.props.currentTag.id == tag.id) : false
+
       return (
-        <ListItem key={tag.id} innerDivStyle={listItemStyle.innerDivStyle} primaryText={tag.name}/>
+        <TagItem key={tag.id} tag={tag} selected={selected}/>
       )
     })
 

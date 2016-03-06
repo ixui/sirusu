@@ -1,5 +1,6 @@
 import alt from '../alt'
 import NotebooksActions from '../actions/notebooks'
+import TagsActions from '../actions/tags'
 import CellsActions from '../actions/cells'
 
 class PagesActions {
@@ -17,15 +18,17 @@ class PagesActions {
 
     setTimeout(() => {
       NotebooksActions.fetch()
+      TagsActions.fetch()
       CellsActions.fetch()
     }, 500)
   }
 
-  update(title, subtitle){
+  update(title, subtitle, note, tag){
     this.dispatch({title: title, subtitle: subtitle, note: note, tag: tag})
 
     setTimeout(() => {
       NotebooksActions.fetch()
+      TagsActions.fetch()
       CellsActions.fetch()
     }, 500)
   }
@@ -35,6 +38,7 @@ class PagesActions {
 
     setTimeout(() => {
       NotebooksActions.fetch()
+      TagsActions.fetch()
       CellsActions.fetch()
     }, 500)
   }
