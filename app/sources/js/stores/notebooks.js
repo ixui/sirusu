@@ -23,6 +23,7 @@ class NotebooksStore {
 
     // データ管理
     this.currentNote = null
+    this.originalNotes = defaultNotes
     this.notes = defaultNotes
   }
 
@@ -61,6 +62,7 @@ class NotebooksStore {
       })
 
       _this.notes = _.uniqBy(notesBuffer, "name")
+      _this.originalNotes = _this.notes
       _this.currentNote = _this.currentNote || _this.notes[0]
       _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
     })
@@ -69,6 +71,15 @@ class NotebooksStore {
 
   onSelect(data){
     this.currentNote = data.note
+  }
+
+  onSearch(data){
+    let query = _.lowerCase(data.query)
+    this.notes = this.originalNotes
+    this.notes = _.filter(this.notes, note => {
+      let name = _.lowerCase(note.name)
+      return (name.indexOf(query) > -1)
+    })
   }
 
 }

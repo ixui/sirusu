@@ -38,7 +38,7 @@ gulp.task 'watch', ->
 
 gulp.task 'compile:js', ->
   browserify sources.main
-    .transform babelify, {presets: ['es2015', 'react']}
+    .transform babelify, {presets: ['es2015', 'react', 'stage-1']}
     .bundle()
     .on 'error', (err) ->
       console.log gutil.colors.red "Oops! you have ERROR! \n" + err.message

@@ -6,6 +6,7 @@ import {Layout, Flex, Fixed} from 'react-layout-pane'
 // Alt - Flux
 // Actions
 import NotebooksActions from '../actions/notebooks'
+import TagsActions from '../actions/tags'
 import SettingActions from '../actions/setting'
 import ErrorsActions from '../actions/errors'
 
@@ -59,6 +60,12 @@ class SideBar extends React.Component {
     SettingActions.showSettingView()
   }
 
+  filterItem() {
+    let query = this.refs.query.getValue()
+    NotebooksActions.search(query)
+    TagsActions.search(query)
+  }
+
   render() {
 
     return (
@@ -70,6 +77,8 @@ class SideBar extends React.Component {
                  inputStyle={textfieldStyle.inputStyle}
                  underlineStyle={textfieldStyle.underlineStyle}
                  underlineFocusStyle={textfieldStyle.underlineFocusStyle}
+                 onChange={this.filterItem.bind(this)}
+                 ref="query"
                  fullWidth className="search-query" />
           <br/>
 

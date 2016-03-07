@@ -19,6 +19,10 @@ class NotebooksActions {
     }, 100)
   }
 
+  search(query){
+    this.dispatch({query: query})
+  }
+
 }
 
 export default alt.createActions(NotebooksActions)

@@ -16,6 +16,7 @@ class TagsStore {
   constructor() {
     this.bindActions(TagsActions)
     this.currentTag = null
+    this.originalTags = []
     this.tags = []
   }
 
@@ -58,7 +59,7 @@ class TagsStore {
       })
 
       _this.tags = _.uniqBy(tagsBuffer, "name")
-      //_this.currentTag = _this.currentTag || _this.tags[0]
+      _this.originalTags = _this.tags
       _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
     })
 
@@ -66,6 +67,15 @@ class TagsStore {
 
   onSelect(data){
     this.currentTag = data.tag
+  }
+
+  onSearch(data){
+    let query = _.lowerCase(data.query)
+    this.tags = this.originalTags
+    this.tags = _.filter(this.tags, tag => {
+      let name = _.lowerCase(tag.name)
+      return (name.indexOf(query) > -1)
+    })
   }
 
 }

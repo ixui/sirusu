@@ -19,6 +19,10 @@ class TagsActions {
     }, 100)
   }
 
+  search(query){
+    this.dispatch({query: query})
+  }
+
 }
 
 export default alt.createActions(TagsActions)
