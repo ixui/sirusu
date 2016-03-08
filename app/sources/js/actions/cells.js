@@ -30,6 +30,18 @@ class CellsActions {
     this.dispatch({id: cell.id})
   }
 
+  filterLanguage(query){
+    this.dispatch({query: query})
+  }
+
+  showSelectLanguageView(cell){
+    this.dispatch({id: cell.id})
+  }
+
+  hideSelectLanguageView(){
+    this.dispatch({})
+  }
+
 }
 
 export default alt.createActions(CellsActions)

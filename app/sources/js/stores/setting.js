@@ -10,7 +10,7 @@ class SettingStore {
   constructor() {
     this.bindActions(SettingActions)
     this.dataPath = localStorage.getItem('dataPath') || ''
-    this.visibleSettingView = (this.dataPath) ? false : true
+    this.visibleSettingView = (this.dataPath) ? false : true //初回起動時などデータパスが取得できない際には表示させる
   }
 
   onShowSettingView() {

@@ -15,6 +15,10 @@ class CellsStore {
   // **************************************************** 
   constructor() {
     this.bindActions(CellsActions)
+    this.visibleSelectLanguageView = false
+    this.originalLanguages = ['actionscript', 'apache', 'applescript', 'xml', 'asciidoc', 'aspectj', 'bash', 'clojure', 'clojure-repl', 'coffeescript', 'css', 'dart', 'delphi', 'diff', 'django', 'dos', 'dust', 'elixir', 'ruby', 'erb', 'erlang-repl', 'erlang', 'fsharp', 'go', 'gradle', 'groovy', 'haml', 'haskell', 'http', 'ini', 'java', 'javascript', 'json', 'less', 'lisp', 'lua', 'makefile', 'nginx', 'objectivec', 'perl', 'php', 'powershell', 'profile', 'puppet', 'python', 'q', 'r', 'roboconf', 'rust', 'scala', 'scheme', 'scss', 'smalltalk', 'sql', 'stylus', 'swift', 'typescript', 'vbnet', 'vbscript', 'vim']
+    this.languages = ['actionscript', 'apache', 'applescript', 'xml', 'asciidoc', 'aspectj', 'bash', 'clojure', 'clojure-repl', 'coffeescript', 'css', 'dart', 'delphi', 'diff', 'django', 'dos', 'dust', 'elixir', 'ruby', 'erb', 'erlang-repl', 'erlang', 'fsharp', 'go', 'gradle', 'groovy', 'haml', 'haskell', 'http', 'ini', 'java', 'javascript', 'json', 'less', 'lisp', 'lua', 'makefile', 'nginx', 'objectivec', 'perl', 'php', 'powershell', 'profile', 'puppet', 'python', 'q', 'r', 'roboconf', 'rust', 'scala', 'scheme', 'scss', 'smalltalk', 'sql', 'stylus', 'swift', 'typescript', 'vbnet', 'vbscript', 'vim']
+    this.currentCell = null // ダイアログにて現在編集中のセル 他のモデルとか意味合いが違うので注意する
     this.cells = []
   }
 
@@ -92,6 +96,27 @@ class CellsStore {
     this.cells = _.reject(this.cells, ["id", data.id])
 
     this.Persist()
+  }
+
+  onFilterLanguage(data){
+    let query = _.lowerCase(data.query)
+    this.languages = this.originalLanguages
+    this.languages = _.filter(this.languages, language => {
+      let name = _.lowerCase(language)
+      return (name.indexOf(query) > -1)
+    })
+  }
+
+  onShowSelectLanguageView(data){
+    this.currentCell = _.find(this.cells, cell => {
+      return (cell.id == data.id)
+    })
+    this.visibleSelectLanguageView = true
+  }
+
+  onHideSelectLanguageView(){
+    this.currentCell = null
+    this.visibleSelectLanguageView = false
   }
 
 }

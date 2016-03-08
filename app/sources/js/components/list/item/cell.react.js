@@ -69,7 +69,8 @@ class CellItem extends React.Component {
   }
 
   toCode() {
-    CellsActions.toCode(this.props.cell, "ruby")
+    //CellsActions.toCode(this.props.cell, "ruby")
+    CellsActions.showSelectLanguageView(this.props.cell)
   }
 
   toDiagram() {

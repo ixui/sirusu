@@ -22,6 +22,7 @@ import IconButton from 'material-ui/lib/icon-button'
 import Colors from 'material-ui/lib/styles/colors'
 
 import PageList from '../components/list/page.react'
+import SelectLanguageDialog from '../components/dialog/select_language_dialog.react'
 
 
 const textfieldStyle = {
@@ -121,6 +122,7 @@ class PagesBar extends React.Component {
                  fullWidth className="search-query" />
           <br/>
 
+          <SelectLanguageDialog/>
           <PageList/>
         </Flex>
 
