@@ -54,7 +54,7 @@ class SelectLanguageDialog extends React.Component {
 
   rowSelect(e) {
     let language = this.props.languages[e]
-    CellsActions.toCode(this.props.currentCell, language)
+    CellsActions.toCode(language)
   }
 
   filter() {

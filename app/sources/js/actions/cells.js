@@ -10,36 +10,40 @@ class CellsActions {
     this.dispatch({})
   }
 
-  toMarkdown(cell){
-    this.dispatch({id: cell.id})
+  toMarkdown(){
+    this.dispatch()
   }
 
-  toDiagram(cell){
-    this.dispatch({id: cell.id})
+  toDiagram(){
+    this.dispatch()
   }
 
-  toCode(cell, language){
-    this.dispatch({id: cell.id, language: language})
+  toCode(language){
+    this.dispatch({language: language})
   }
 
-  update(cell, text){
-    this.dispatch({id: cell.id, text: text})
+  update(text){
+    this.dispatch({text: text})
   }
 
-  remove(cell){
-    this.dispatch({id: cell.id})
+  remove(){
+    this.dispatch()
+  }
+
+  select(cell){
+    this.dispatch({cell: cell})
   }
 
   filterLanguage(query){
     this.dispatch({query: query})
   }
 
-  showSelectLanguageView(cell){
-    this.dispatch({id: cell.id})
+  showSelectLanguageView(){
+    this.dispatch()
   }
 
   hideSelectLanguageView(){
-    this.dispatch({})
+    this.dispatch()
   }
 
 }

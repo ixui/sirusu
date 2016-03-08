@@ -15,10 +15,12 @@ class CellsStore {
   // **************************************************** 
   constructor() {
     this.bindActions(CellsActions)
+    // 言語選択関連
     this.visibleSelectLanguageView = false
     this.originalLanguages = ['actionscript', 'apache', 'applescript', 'xml', 'asciidoc', 'aspectj', 'bash', 'clojure', 'clojure-repl', 'coffeescript', 'css', 'dart', 'delphi', 'diff', 'django', 'dos', 'dust', 'elixir', 'ruby', 'erb', 'erlang-repl', 'erlang', 'fsharp', 'go', 'gradle', 'groovy', 'haml', 'haskell', 'http', 'ini', 'java', 'javascript', 'json', 'less', 'lisp', 'lua', 'makefile', 'nginx', 'objectivec', 'perl', 'php', 'powershell', 'profile', 'puppet', 'python', 'q', 'r', 'roboconf', 'rust', 'scala', 'scheme', 'scss', 'smalltalk', 'sql', 'stylus', 'swift', 'typescript', 'vbnet', 'vbscript', 'vim']
     this.languages = ['actionscript', 'apache', 'applescript', 'xml', 'asciidoc', 'aspectj', 'bash', 'clojure', 'clojure-repl', 'coffeescript', 'css', 'dart', 'delphi', 'diff', 'django', 'dos', 'dust', 'elixir', 'ruby', 'erb', 'erlang-repl', 'erlang', 'fsharp', 'go', 'gradle', 'groovy', 'haml', 'haskell', 'http', 'ini', 'java', 'javascript', 'json', 'less', 'lisp', 'lua', 'makefile', 'nginx', 'objectivec', 'perl', 'php', 'powershell', 'profile', 'puppet', 'python', 'q', 'r', 'roboconf', 'rust', 'scala', 'scheme', 'scss', 'smalltalk', 'sql', 'stylus', 'swift', 'typescript', 'vbnet', 'vbscript', 'vim']
-    this.currentCell = null // ダイアログにて現在編集中のセル 他のモデルとか意味合いが違うので注意する
+
+    this.currentCell = null
     this.cells = []
   }
 
@@ -56,18 +58,18 @@ class CellsStore {
     this.Persist()
   }
 
-  onToMarkdown(data){
+  onToMarkdown(){
     this.cells = _.map(this.cells, (cell) => {
-      if (data.id == cell.id) _.merge(cell, {type: "markdown", subtype: null}) 
+      if (this.currentCell.id == cell.id) _.merge(cell, {type: "markdown", subtype: null}) 
       return cell
     })
 
     this.Persist()
   }
 
-  onToDiagram(data){
+  onToDiagram(){
     this.cells = _.map(this.cells, (cell) => {
-      if (data.id == cell.id) _.merge(cell, {type: "diagram", subtype: null}) 
+      if (this.currentCell.id == cell.id) _.merge(cell, {type: "diagram", subtype: null}) 
       return cell
     })
 
@@ -76,7 +78,7 @@ class CellsStore {
 
   onToCode(data){
     this.cells = _.map(this.cells, (cell) => {
-      if (data.id == cell.id) _.merge(cell, {type: "code", subtype: data.language}) 
+      if (this.currentCell.id == cell.id) _.merge(cell, {type: "code", subtype: data.language}) 
       return cell
     })
 
@@ -85,17 +87,21 @@ class CellsStore {
 
   onUpdate(data){
     this.cells = _.map(this.cells, (cell) => {
-      if (data.id == cell.id) _.merge(cell, {body: data.text}) 
+      if (this.currentCell.id == cell.id) _.merge(cell, {body: data.text}) 
       return cell
     })
 
     this.Persist()
   }
 
-  onRemove(data){
-    this.cells = _.reject(this.cells, ["id", data.id])
-
+  onRemove(){
+    this.cells = _.reject(this.cells, ["id", this.currentCell.id])
+    this.currentCell = null
     this.Persist()
+  }
+
+  onSelect(data){
+    this.currentCell = data.cell
   }
 
   onFilterLanguage(data){
@@ -107,15 +113,12 @@ class CellsStore {
     })
   }
 
-  onShowSelectLanguageView(data){
-    this.currentCell = _.find(this.cells, cell => {
-      return (cell.id == data.id)
-    })
+  onShowSelectLanguageView(){
     this.visibleSelectLanguageView = true
   }
 
   onHideSelectLanguageView(){
-    this.currentCell = null
+    this.languages = this.originalLanguages
     this.visibleSelectLanguageView = false
   }
 

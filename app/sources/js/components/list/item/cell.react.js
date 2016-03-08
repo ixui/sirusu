@@ -65,25 +65,29 @@ const cardStyle = {
 class CellItem extends React.Component {
 
   toMarkdown() {
-    CellsActions.toMarkdown(this.props.cell)
+    CellsActions.select(this.props.cell)
+    CellsActions.toMarkdown()
   }
 
   toCode() {
-    //CellsActions.toCode(this.props.cell, "ruby")
-    CellsActions.showSelectLanguageView(this.props.cell)
+    CellsActions.select(this.props.cell)
+    CellsActions.showSelectLanguageView()
   }
 
   toDiagram() {
-    CellsActions.toDiagram(this.props.cell)
+    CellsActions.select(this.props.cell)
+    CellsActions.toDiagram()
   }
 
   onChange() {
     let text = this.refs.bodyText.getValue()
-    CellsActions.update(this.props.cell, text)
+    CellsActions.select(this.props.cell)
+    CellsActions.update(text)
   }
 
   onRemove() {
-    CellsActions.remove(this.props.cell)
+    CellsActions.select(this.props.cell)
+    CellsActions.remove()
   }
 
   render() {
@@ -91,6 +95,7 @@ class CellItem extends React.Component {
       let cell = this.props.cell
       let type = cell.subtype ? cell.subtype : cell.type
       let bodyText = cell.body ? cell.body : ""
+      
       return (
         <div key={cell.id}>
           <Card>
