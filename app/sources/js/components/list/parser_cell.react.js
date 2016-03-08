@@ -12,17 +12,10 @@ import CellsStore from '../../stores/cells'
 import BrowserStore from '../../stores/browser'
 
 // Design
-import CellItem from '../../components/list/item/cell.react'
-import Spacer from '../../components/helpers/spacer.react'
+import ParserCellItem from '../../components/list/item/parser_cell.react'
 
-const editorStyle = {
-  style: {
-    overflowY       : 'auto',
-    height          : '800px',
-  },
-}
 
-class CellList extends React.Component {
+class ParserCellList extends React.Component {
 
   // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
   static getStores() {
@@ -34,22 +27,10 @@ class CellList extends React.Component {
     return _.merge(CellsStore.getState(), BrowserStore.getState()) 
   }  
 
-  // Alt Store との連結完了後に呼ばれるメソッド - 純正Reactでの componentDidMount で行う処理を記載することになるはず
-  // Storeの変更が絡む処理は componentDidMount ではなく componentDidConnect でしないと変更検知が届かない
-  static componentDidConnect(prop, context) {
-    CellsActions.fetch()
-  }
-
   render() {
 
-    let dynamicEditorStyle = _.merge(editorStyle.style, {height: this.props.height - 100})
-
     let cells = this.props.cells.map ((cell) => {
-      return (
-        <div key={cell.id}>
-          <CellItem cell={cell} />
-        </div>
-      )
+      return <ParserCellItem key={cell.id} cell={cell}/>
     })
 
     return (
@@ -63,4 +44,4 @@ class CellList extends React.Component {
 
 }
 
-export default connectToStores(CellList)
+export default connectToStores(ParserCellList)

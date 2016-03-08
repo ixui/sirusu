@@ -89,6 +89,21 @@ html, body {
   background: transparent;
 }
 
+.viewer-cell-unselected{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  background: rgba(255,255,255,0.1);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.viewer-cell-selected{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: rgba(0,0,0,0.1);
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
 
 /** highlight.js **/
 /*

@@ -90,6 +90,10 @@ class CellItem extends React.Component {
     CellsActions.remove()
   }
 
+  onSelect() {
+    CellsActions.select(this.props.cell)
+  }
+
   render() {
 
       let cell = this.props.cell
@@ -97,8 +101,8 @@ class CellItem extends React.Component {
       let bodyText = cell.body ? cell.body : ""
       
       return (
-        <div key={cell.id}>
-          <Card>
+        <div>
+          <Card onFocus={this.onSelect.bind(this)}>
             <CardHeader title={type} style={cardStyle.headerStyle} titleStyle={cardStyle.titleStyle} ></CardHeader>
             <CardText style={cardStyle.textStyle}>
               <TextField hintText="# Hello World"
