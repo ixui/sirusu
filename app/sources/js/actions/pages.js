@@ -51,6 +51,10 @@ class PagesActions {
     }, 500)
   }
 
+  search(query){
+    this.dispatch({query: query})
+  }
+
   showNewPageView(){
     this.dispatch()
   }

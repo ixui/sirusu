@@ -94,6 +94,11 @@ class PagesBar extends React.Component {
     PagesActions.showNewPageView()
   }
 
+  filterItem() {
+    let query = this.refs.query.getValue()
+    PagesActions.search(query)
+  }
+
   render() {
 
     let dynamicListStyle = _.merge(listStyle.style, {height: this.props.height - 100})
@@ -111,6 +116,8 @@ class PagesBar extends React.Component {
                  inputStyle={textfieldStyle.inputStyle}
                  underlineStyle={textfieldStyle.underlineStyle}
                  underlineFocusStyle={textfieldStyle.underlineFocusStyle}
+                 onChange={this.filterItem.bind(this)}
+                 ref="query"
                  fullWidth className="search-query" />
           <br/>
 

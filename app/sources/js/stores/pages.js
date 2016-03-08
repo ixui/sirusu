@@ -22,6 +22,7 @@ class PagesStore {
     this.visibleEditPageView = false
 
     this.currentPage = null
+    this.originalPages = []
     this.pages = []
   }
 
@@ -81,6 +82,7 @@ class PagesStore {
       })
 
       _this.pages = pagesBuffer
+      _this.originalPages = _this.pages
       _this.currentPage = _this.pages[0]
       _this.emitChange() // 非同期で処理を行っているのでstateを更新後にemitChangeで再度反映する
 
@@ -159,6 +161,15 @@ class PagesStore {
 
   onSelect(data){
     this.currentPage = data.page
+  }
+
+  onSearch(data){
+    let query = _.lowerCase(data.query)
+    this.pages = this.originalPages
+    this.pages = _.filter(this.pages, page => {
+      let text = _.lowerCase(page.title) + ":" + _.lowerCase(page.subtitle)
+      return (text.indexOf(query) > -1)
+    })
   }
 
   onShowNewPageView(){
