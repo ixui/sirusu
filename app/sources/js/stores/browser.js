@@ -11,11 +11,16 @@ class BrowserStore {
     this.bindActions(BrowserActions)
     this.width = 1000
     this.height = 800
+    this.isTwoScreenMode = false
   }
 
   onResize(size) {
     this.width  = size.width
     this.height = size.height
+  }
+
+  onToggleTwoScreenMode() {
+    this.isTwoScreenMode = !(this.isTwoScreenMode)
   }
 
 }

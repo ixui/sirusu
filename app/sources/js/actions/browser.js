@@ -6,6 +6,10 @@ class BrowserActions {
     this.dispatch(size)
   }
 
+  toggleTwoScreenMode() {
+    this.dispatch()
+  }
+
 }
 
 export default alt.createActions(BrowserActions)

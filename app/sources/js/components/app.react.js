@@ -1,9 +1,11 @@
 // Library
+import connectToStores from 'alt/utils/connectToStores'
 import React from 'react'
 import {Layout, Flex, Fixed} from 'react-layout-pane'
 
 // Alt - Flux
 import BrowserActions from '../actions/browser'
+import BrowserStore from '../stores/browser'
 
 // Components
 import Nortification   from '../components/nortification.react'
@@ -14,6 +16,16 @@ import Viewer          from '../components/viewer.react'
 
 
 class App extends React.Component {
+
+  // Alt Store との連結設定 - ここに設定したStoreから変更通知を受け取る
+  static getStores() {
+    return [BrowserStore]
+  }
+
+  // Alt を使用した場合の Props の生成ルール - ここで返す結果がPropsに設定される
+  static getPropsFromStores() {
+    return BrowserStore.getState()
+  }  
 
 	componentDidMount() {
     window.addEventListener('resize', this.resize)
@@ -30,6 +42,9 @@ class App extends React.Component {
 
   render() {
 
+    let sidebarClass = this.props.isTwoScreenMode ? "sidebar-hide" : "sidebar"
+    let pagesbarClass = this.props.isTwoScreenMode ? "pagesbar-hide" : "pagesbar"
+
     return (
     	<Layout type="column">
 	    	<Fixed>
@@ -37,8 +52,8 @@ class App extends React.Component {
 	      </Fixed>
 	      <Flex>
           <Layout type="row">
-           <Fixed className="sidebar"><SideBar/></Fixed>
-           <Fixed className="pagesbar"><PagesBar/></Fixed>
+           <Fixed className={sidebarClass}><SideBar/></Fixed>
+           <Fixed className={pagesbarClass}><PagesBar/></Fixed>
            <Flex className="editor"><Editor/></Flex>
            <Flex className="viewer"><Viewer/></Flex>
           </Layout>
@@ -49,4 +64,4 @@ class App extends React.Component {
 
 }
 
-export default App
+export default connectToStores(App)

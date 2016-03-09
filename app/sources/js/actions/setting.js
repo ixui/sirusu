@@ -14,6 +14,9 @@ class SettingActions {
     this.dispatch({dataPath: path})
   }
 
+  toggleFullscreen() {
+    this.dispatch()
+  }
 
 }
 

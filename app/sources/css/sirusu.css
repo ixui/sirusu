@@ -18,6 +18,12 @@ html, body {
     width: 200px;
     color: #fff;
 }
+.sidebar-hide {
+    padding: 0rem;
+    background: #00838F;
+    width: 0px;
+    color: #fff;
+}
 
 .sidebar a {
     color: #fff;
@@ -30,6 +36,13 @@ html, body {
     padding: 1rem;
     background: #0097A7;
     width: 300px;
+    color: #fff;
+}
+
+.pagesbar-hide {
+    padding: 0rem;
+    background: #0097A7;
+    width: 0px;
     color: #fff;
 }
 

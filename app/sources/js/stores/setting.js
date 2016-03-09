@@ -9,6 +9,7 @@ class SettingStore {
   // **************************************************** 
   constructor() {
     this.bindActions(SettingActions)
+    this.isFullscreen = false
     this.dataPath = localStorage.getItem('dataPath') || ''
     this.visibleSettingView = (this.dataPath) ? false : true //初回起動時などデータパスが取得できない際には表示させる
   }
@@ -24,6 +25,12 @@ class SettingStore {
   onSave(data) {
     localStorage.setItem('dataPath', data.dataPath)
     this.dataPath  = data.dataPath
+  }
+
+  onToggleFullscreen() {
+
+    this.isFullscreen = !(this.isFullscreen)
+
   }
 
 }
