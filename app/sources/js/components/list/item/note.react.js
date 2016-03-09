@@ -23,22 +23,9 @@ const listItemStyle = {
   },
   innerDivStyle: {
     color          : Colors.grey300,
-    paddingTop     : '1px',
-    paddingBottom  : '1px',
+    paddingTop     : '3px',
+    paddingBottom  : '3px',
     fontSize       : '12px',
-  },
-}
-
-const iconButtonStyle = {
-  style: {
-    padding:       2,
-    width:         14,
-    height:        14,
-    backgroundColor: Colors.cyan800,
-  },
-  iconStyle: {
-    fontSize:      '12px',
-    color:         Colors.cyan700,
   },
 }
 
@@ -52,11 +39,16 @@ class NoteItem extends React.Component {
   render() {
 
     let note = this.props.note
-    let noteName = this.props.selected ? "・" + note.name : "　" + note.name
+    let noteName = note.name
+    let noteStyle = listItemStyle.style
+
+    if (this.props.selected) {
+      noteStyle = {backgroundColor: Colors.cyan700}
+    }
 
     return (
       <ListItem onClick={this.selectNote.bind(this)} 
-                style={listItemStyle.style}
+                style={noteStyle}
                 innerDivStyle={listItemStyle.innerDivStyle} 
                 primaryText={noteName} />
     )

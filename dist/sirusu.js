@@ -2149,22 +2149,9 @@ var listItemStyle = {
   },
   innerDivStyle: {
     color: _colors2.default.grey300,
-    paddingTop: '1px',
-    paddingBottom: '1px',
+    paddingTop: '3px',
+    paddingBottom: '3px',
     fontSize: '12px'
-  }
-};
-
-var iconButtonStyle = {
-  style: {
-    padding: 2,
-    width: 14,
-    height: 14,
-    backgroundColor: _colors2.default.cyan800
-  },
-  iconStyle: {
-    fontSize: '12px',
-    color: _colors2.default.cyan700
   }
 };
 
@@ -2188,10 +2175,15 @@ var NoteItem = function (_React$Component) {
     value: function render() {
 
       var note = this.props.note;
-      var noteName = this.props.selected ? "・" + note.name : "　" + note.name;
+      var noteName = note.name;
+      var noteStyle = listItemStyle.style;
+
+      if (this.props.selected) {
+        noteStyle = { backgroundColor: _colors2.default.cyan700 };
+      }
 
       return _react2.default.createElement(_listItem2.default, { onClick: this.selectNote.bind(this),
-        style: listItemStyle.style,
+        style: noteStyle,
         innerDivStyle: listItemStyle.innerDivStyle,
         primaryText: noteName });
     }
@@ -2260,6 +2252,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // ******************************************************************
 
 var listItemStyle = {
+  style: {
+    height: 44,
+    backgroundColor: _colors2.default.cyan700
+  },
   innerDivStyle: {
     color: _colors2.default.cyan100,
     paddingTop: '3px',
@@ -2306,7 +2302,11 @@ var PageItem = function (_React$Component) {
     value: function render() {
 
       var page = this.props.page;
-      var pageName = this.props.selected ? "・" + page.title : "　" + page.title;
+      var pageStyle = listItemStyle.style;
+
+      if (this.props.selected) {
+        pageStyle = { height: 44, backgroundColor: _colors2.default.cyan600 };
+      }
 
       var iconButton = _react2.default.createElement(
         _iconButton2.default,
@@ -2320,8 +2320,9 @@ var PageItem = function (_React$Component) {
       );
 
       return _react2.default.createElement(_listItem2.default, { onClick: this.selectPage.bind(this),
+        style: pageStyle,
         innerDivStyle: listItemStyle.innerDivStyle,
-        primaryText: pageName,
+        primaryText: page.title,
         secondaryText: page.subtitle,
         rightIconButton: iconButton });
     }
@@ -2548,22 +2549,9 @@ var listItemStyle = {
   },
   innerDivStyle: {
     color: _colors2.default.grey300,
-    paddingTop: '1px',
-    paddingBottom: '1px',
+    paddingTop: '3px',
+    paddingBottom: '3px',
     fontSize: '12px'
-  }
-};
-
-var iconButtonStyle = {
-  style: {
-    padding: 2,
-    width: 14,
-    height: 14,
-    backgroundColor: _colors2.default.cyan800
-  },
-  iconStyle: {
-    fontSize: '12px',
-    color: _colors2.default.cyan700
   }
 };
 
@@ -2587,10 +2575,15 @@ var TagItem = function (_React$Component) {
     value: function render() {
 
       var tag = this.props.tag;
-      var tagName = this.props.selected ? "・" + tag.name : "　" + tag.name;
+      var tagName = tag.name;
+      var tagStyle = listItemStyle.style;
+
+      if (this.props.selected) {
+        tagStyle = { backgroundColor: _colors2.default.cyan700 };
+      }
 
       return _react2.default.createElement(_listItem2.default, { onClick: this.selectTag.bind(this),
-        style: listItemStyle.style,
+        style: tagStyle,
         innerDivStyle: listItemStyle.innerDivStyle,
         primaryText: tagName });
     }

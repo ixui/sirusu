@@ -17,6 +17,10 @@ import Colors from 'material-ui/lib/styles/colors'
 // ******************************************************************
 
 const listItemStyle = {
+  style: {
+    height: 44,
+    backgroundColor: Colors.cyan700,
+  },
   innerDivStyle: {
     color          : Colors.cyan100,
     paddingTop     : '3px',
@@ -52,7 +56,11 @@ class PageItem extends React.Component {
   render() {
 
     let page = this.props.page
-    let pageName = this.props.selected ? "・" + page.title : "　" + page.title
+    let pageStyle = listItemStyle.style
+
+    if (this.props.selected) {
+      pageStyle = {height: 44, backgroundColor: Colors.cyan600}
+    }
 
     const iconButton = (
       <IconButton onClick={this.editPage.bind(this)} 
@@ -65,8 +73,9 @@ class PageItem extends React.Component {
 
     return (
       <ListItem onClick={this.selectPage.bind(this)} 
+                style={pageStyle}
                 innerDivStyle={listItemStyle.innerDivStyle} 
-                primaryText={pageName} 
+                primaryText={page.title} 
                 secondaryText={page.subtitle}
                 rightIconButton={iconButton}/>
     )

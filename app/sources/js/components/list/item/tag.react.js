@@ -23,22 +23,9 @@ const listItemStyle = {
   },
   innerDivStyle: {
     color          : Colors.grey300,
-    paddingTop     : '1px',
-    paddingBottom  : '1px',
+    paddingTop     : '3px',
+    paddingBottom  : '3px',
     fontSize       : '12px',
-  },
-}
-
-const iconButtonStyle = {
-  style: {
-    padding:       2,
-    width:         14,
-    height:        14,
-    backgroundColor: Colors.cyan800,
-  },
-  iconStyle: {
-    fontSize:      '12px',
-    color:         Colors.cyan700,
   },
 }
 
@@ -52,11 +39,16 @@ class TagItem extends React.Component {
   render() {
 
     let tag = this.props.tag
-    let tagName = this.props.selected ? "・" + tag.name : "　" + tag.name
+    let tagName = tag.name
+    let tagStyle = listItemStyle.style
+
+    if (this.props.selected) {
+      tagStyle = {backgroundColor: Colors.cyan700}
+    }
 
     return (
       <ListItem onClick={this.selectTag.bind(this)} 
-                style={listItemStyle.style}
+                style={tagStyle}
                 innerDivStyle={listItemStyle.innerDivStyle} 
                 primaryText={tagName} />
     )
