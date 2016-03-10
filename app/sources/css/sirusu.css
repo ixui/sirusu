@@ -89,7 +89,7 @@ html, body {
   background: transparent;
 }
 
-.viewer-cell-unselected{
+.viewer-cell-unselected {
   padding-top: 0px;
   padding-bottom: 0px;
   background: rgba(255,255,255,0.1);
@@ -97,12 +97,17 @@ html, body {
   transition: all 0.2s ease-in-out;
 }
 
-.viewer-cell-selected{
+.viewer-cell-selected {
   padding-top: 10px;
   padding-bottom: 10px;
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   border-right:2px solid #0097A7;
+}
+
+svg {
+  width: 100%;
+  height: auto;
 }
 
 /** highlight.js **/
