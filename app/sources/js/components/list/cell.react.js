@@ -45,9 +45,12 @@ class CellList extends React.Component {
     let dynamicEditorStyle = _.merge(editorStyle.style, {height: this.props.height - 100})
 
     let cells = this.props.cells.map ((cell) => {
+
+      let isSelected = (cell == this.props.currentCell)
+
       return (
         <div key={cell.id}>
-          <CellItem cell={cell} />
+          <CellItem cell={cell} isSelected={isSelected} />
         </div>
       )
     })

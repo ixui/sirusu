@@ -1,5 +1,6 @@
 // Library
 import React from 'react'
+import {Motion, spring} from 'react-motion'
 
 // Alt - Flux
 // Actions
@@ -99,6 +100,35 @@ class CellItem extends React.Component {
       let cell = this.props.cell
       let type = cell.subtype ? cell.subtype : cell.type
       let bodyText = cell.body ? cell.body : ""
+      let actions = this.props.isSelected ? (
+
+        <Motion defaultStyle={{height: 0}} style={{height: spring(70)}}>
+          {interpolatingStyle => (
+            <CardActions style={interpolatingStyle}>
+              <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
+              <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
+              <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
+
+              <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
+            </CardActions>
+          )}
+        </Motion>
+
+      ) : (
+
+        <Motion defaultStyle={{height: 70}} style={{height: spring(0)}}>
+          {interpolatingStyle => (
+            <CardActions style={interpolatingStyle}>
+              <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
+              <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
+              <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
+
+              <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
+            </CardActions>
+          )}
+        </Motion>
+
+      )
       
       return (
         <div>
@@ -115,13 +145,9 @@ class CellItem extends React.Component {
                          ref="bodyText"
                          ></TextField>
             </CardText>
-            <CardActions>
-              <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
-              <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
-              <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
 
-              <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
-            </CardActions>
+            {actions}
+
           </Card>
 
           <Spacer/>

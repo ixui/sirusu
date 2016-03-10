@@ -2,6 +2,7 @@
 import connectToStores from 'alt/utils/connectToStores'
 import React from 'react'
 import {Layout, Flex, Fixed} from 'react-layout-pane'
+import {Motion, spring} from 'react-motion'
 
 // Alt - Flux
 import BrowserActions from '../actions/browser'
@@ -42,8 +43,25 @@ class App extends React.Component {
 
   render() {
 
-    let sidebarClass = this.props.isTwoScreenMode ? "sidebar-hide" : "sidebar"
-    let pagesbarClass = this.props.isTwoScreenMode ? "pagesbar-hide" : "pagesbar"
+    let sidebar = this.props.isTwoScreenMode ? (
+      <Motion defaultStyle={{width: 200}} style={{width: spring(0)}}>
+        {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
+      </Motion>
+    ) : (
+      <Motion defaultStyle={{width: 0}} style={{width: spring(200)}}>
+        {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
+      </Motion>
+    )
+
+    let pagesbar = this.props.isTwoScreenMode ? (
+      <Motion defaultStyle={{width: 300, padding: 12}} style={{width: spring(0), padding: spring(0)}}>
+        {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
+      </Motion>
+    ) : (
+      <Motion defaultStyle={{width: 0, padding: 0}} style={{width: spring(300), padding: spring(12)}}>
+        {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
+      </Motion>
+    )
 
     return (
     	<Layout type="column">
@@ -52,8 +70,8 @@ class App extends React.Component {
 	      </Fixed>
 	      <Flex>
           <Layout type="row">
-           <Fixed className={sidebarClass}><SideBar/></Fixed>
-           <Fixed className={pagesbarClass}><PagesBar/></Fixed>
+            {sidebar}
+            {pagesbar}
            <Flex className="editor"><Editor/></Flex>
            <Flex className="viewer"><Viewer/></Flex>
           </Layout>

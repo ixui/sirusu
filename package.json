@@ -55,6 +55,7 @@
     "react-highlight": "^0.6.1",
     "react-layout-pane": "^0.1.16",
     "react-markdown-area": "^0.3.8",
+    "react-motion": "^0.4.2",
     "react-tap-event-plugin": "^0.2.2"
   }
 }
