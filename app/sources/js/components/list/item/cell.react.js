@@ -31,7 +31,7 @@ const cardStyle = {
     color:         Colors.grey300,
   },
   textStyle: {
-    maxHeight:     '300px',
+    maxHeight:     '700px',
     overflowY:     'auto',
   },
   inputStyle: {

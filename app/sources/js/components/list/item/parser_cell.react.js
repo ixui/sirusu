@@ -42,9 +42,9 @@ class ParserCellItem extends React.Component {
   render() {
 
     let cell = this.props.cell
-    let selectedCellClassName = "viewer-cell-unselected"
+    let selectedCellClassName = "viewer-cell-unselected markdown-body"
     if (this.props.currentCell && cell.id == this.props.currentCell.id) {
-      selectedCellClassName = "viewer-cell-selected"
+      selectedCellClassName = "viewer-cell-selected markdown-body"
     }
 
     switch(cell.type) {
