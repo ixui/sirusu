@@ -18,6 +18,9 @@ import Colors from 'material-ui/lib/styles/colors'
 
 import Spacer from '../../../components/helpers/spacer.react'
 
+let dialog = remote.require('dialog')
+let browserWindow = remote.require('browser-window')
+
 
 const cardStyle = {
   headerStyle: {
@@ -87,8 +90,20 @@ class CellItem extends React.Component {
   }
 
   onRemove() {
-    CellsActions.select(this.props.cell)
-    CellsActions.remove()
+
+    let options = {
+        title: 'セルの削除',
+        type: 'question',
+        buttons: ['OK', 'Cancel'],
+        message: '選択中のセルを削除してもよろしいですか？',
+    };
+
+    dialog.showMessageBox(options, response => {
+      if (response == 0 ) { // OK
+        CellsActions.select(this.props.cell)
+        CellsActions.remove()
+      }
+    })
   }
 
   onSelect() {
