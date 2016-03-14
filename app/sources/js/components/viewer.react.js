@@ -59,6 +59,10 @@ class Viewer extends React.Component {
     BrowserActions.toggleTwoScreenMode()
   }
 
+  toPrintMode() {
+    BrowserActions.togglePrintMode()
+  }
+
   render() {
 
     let dynamicViewerStyle = _.merge(viewerStyle.style, {height: this.props.height - 100})
@@ -77,6 +81,14 @@ class Viewer extends React.Component {
             tooltipPosition="top-left">fullscreen</IconButton>
     )
 
+    let toPrintModeButton = (
+      <IconButton onClick={this.toPrintMode.bind(this)} 
+            iconStyle={toolbarStyle.onIconStyle} 
+            iconClassName="material-icons" 
+            tooltip="PDFへ印刷する" 
+            tooltipPosition="top-left">print</IconButton>
+    )
+
 
     return (
 
@@ -90,6 +102,7 @@ class Viewer extends React.Component {
           <Toolbar style={toolbarStyle.style}>
             <ToolbarGroup firstChild={true} float="right">
               {toggleTwoScreenModeButton}
+              {toPrintModeButton}
             </ToolbarGroup>
           </Toolbar>
         </Fixed>

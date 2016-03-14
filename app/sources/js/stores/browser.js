@@ -12,6 +12,7 @@ class BrowserStore {
     this.width = 1000
     this.height = 800
     this.isTwoScreenMode = false
+    this.isPrintMode = false
   }
 
   onResize(size) {
@@ -21,6 +22,10 @@ class BrowserStore {
 
   onToggleTwoScreenMode() {
     this.isTwoScreenMode = !(this.isTwoScreenMode)
+  }
+
+  onTogglePrintMode() {
+    this.isPrintMode = !(this.isPrintMode)
   }
 
 }

@@ -14,6 +14,7 @@ import SideBar         from '../components/side_bar.react'
 import PagesBar        from '../components/pages_bar.react'
 import Editor          from '../components/editor.react'
 import Viewer          from '../components/viewer.react'
+import Print           from '../components/print.react'
 
 
 class App extends React.Component {
@@ -44,7 +45,7 @@ class App extends React.Component {
   render() {
 
     let sidebar = this.props.isTwoScreenMode ? (
-      <Motion defaultStyle={{width: 200}} style={{width: spring(0)}}>
+      <Motion defaultStyle={{width: 0}} style={{width: spring(0)}}>
         {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
       </Motion>
     ) : (
@@ -54,7 +55,7 @@ class App extends React.Component {
     )
 
     let pagesbar = this.props.isTwoScreenMode ? (
-      <Motion defaultStyle={{width: 300, padding: 12}} style={{width: spring(0), padding: spring(0)}}>
+      <Motion defaultStyle={{width: 0, padding: 0}} style={{width: spring(0), padding: spring(0)}}>
         {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
       </Motion>
     ) : (
@@ -63,21 +64,27 @@ class App extends React.Component {
       </Motion>
     )
 
-    return (
-    	<Layout type="column">
-	    	<Fixed>
+    let content = this.props.isPrintMode ? (
+
+      <Print/>
+    ) : (
+
+      <Layout type="column">
+        <Fixed>
           <Fixed><Nortification/></Fixed>
-	      </Fixed>
-	      <Flex>
+        </Fixed>
+        <Flex>
           <Layout type="row">
             {sidebar}
             {pagesbar}
-           <Flex className="editor"><Editor/></Flex>
-           <Flex className="viewer"><Viewer/></Flex>
+            <Flex className="editor"><Editor/></Flex>
+            <Flex className="viewer"><Viewer/></Flex>
           </Layout>
-	      </Flex>
-	   </Layout>
+        </Flex>
+     </Layout>
     )
+
+    return content
   }
 
 }

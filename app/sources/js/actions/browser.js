@@ -10,6 +10,10 @@ class BrowserActions {
     this.dispatch()
   }
 
+  togglePrintMode() {
+    this.dispatch()
+  }
+
 }
 
 export default alt.createActions(BrowserActions)

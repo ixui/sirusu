@@ -131,7 +131,7 @@ class CellItem extends React.Component {
 
       ) : (
 
-        <Motion defaultStyle={{height: 70}} style={{height: spring(0)}}>
+        <Motion defaultStyle={{height: 0}} style={{height: spring(0)}}>
           {interpolatingStyle => (
             <CardActions style={interpolatingStyle}>
               <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
