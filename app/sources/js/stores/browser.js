@@ -13,6 +13,7 @@ class BrowserStore {
     this.height = 800
     this.isTwoScreenMode = false
     this.isPrintMode = false
+    this.printContent = null
   }
 
   onResize(size) {
@@ -26,6 +27,13 @@ class BrowserStore {
 
   onTogglePrintMode() {
     this.isPrintMode = !(this.isPrintMode)
+    if (this.isPrintMode == false) {
+      this.printContent = null
+    }
+  }
+
+  onSetPrintContent(content) {
+    this.printContent = content
   }
 
 }

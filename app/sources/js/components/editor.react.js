@@ -2,6 +2,7 @@
 import connectToStores from 'alt/utils/connectToStores'
 import React from 'react'
 import {Layout, Flex, Fixed} from 'react-layout-pane'
+import _ from 'lodash'
 
 // Alt - Flux
 // Actions
