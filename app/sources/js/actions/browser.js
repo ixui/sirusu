@@ -14,9 +14,10 @@ class BrowserActions {
     this.dispatch()
   }
 
-  setPrintContent(content) {
-    this.dispatch(content)
+  print() {
+    this.dispatch()
   }
+
 }
 
 export default alt.createActions(BrowserActions)

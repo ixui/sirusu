@@ -27,6 +27,12 @@ const viewerStyle = {
     overflowY       : 'auto',
     height          : 800,
   },
+  printingStyle: {
+    padding         : 5,
+    overflowY       : 'scroll',
+    width           : '100%',
+    height          : '100%',
+  },
 }
 
 const toolbarStyle = {
@@ -63,6 +69,10 @@ class Viewer extends React.Component {
     BrowserActions.togglePrintMode()
   }
 
+  saveToPDF() {
+    BrowserActions.print()
+  }
+
   render() {
 
     let dynamicViewerStyle = _.merge(viewerStyle.style, {height: this.props.height - 100})
@@ -81,16 +91,36 @@ class Viewer extends React.Component {
             tooltipPosition="top-left">fullscreen</IconButton>
     )
 
-    let toPrintModeButton = (
+    let toPrintModeButton = this.props.isPrintMode ? (
       <IconButton onClick={this.toPrintMode.bind(this)} 
             iconStyle={toolbarStyle.onIconStyle} 
             iconClassName="material-icons" 
-            tooltip="PDFへ印刷する" 
+            tooltip="元に戻す" 
+            tooltipPosition="top-left">flip_to_back</IconButton>
+    ) : (
+      <IconButton onClick={this.toPrintMode.bind(this)} 
+            iconStyle={toolbarStyle.onIconStyle} 
+            iconClassName="material-icons" 
+            tooltip="印刷モード" 
             tooltipPosition="top-left">print</IconButton>
     )
 
+    let saveToPDFButton = this.props.isPrintMode ? (
+      <IconButton onClick={this.saveToPDF.bind(this)} 
+            iconStyle={toolbarStyle.onIconStyle} 
+            iconClassName="material-icons" 
+            tooltip="保存" 
+            tooltipPosition="top-left">get_app</IconButton>
+    ) : null
 
-    return (
+
+    let content = this.props.isPrintingMode ? (
+
+      <div style={viewerStyle.printingStyle}>
+        <ParserCellList/>
+      </div>
+
+    ) : (
 
       <Layout type="column">
 
@@ -103,6 +133,7 @@ class Viewer extends React.Component {
             <ToolbarGroup firstChild={true} float="right">
               {toggleTwoScreenModeButton}
               {toPrintModeButton}
+              {saveToPDFButton}
             </ToolbarGroup>
           </Toolbar>
         </Fixed>
@@ -110,6 +141,9 @@ class Viewer extends React.Component {
      </Layout>
 
     )
+
+
+    return content
   }
 
 }

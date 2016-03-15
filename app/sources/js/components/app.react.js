@@ -14,7 +14,6 @@ import SideBar         from '../components/side_bar.react'
 import PagesBar        from '../components/pages_bar.react'
 import Editor          from '../components/editor.react'
 import Viewer          from '../components/viewer.react'
-import Print           from '../components/print.react'
 
 
 class App extends React.Component {
@@ -44,7 +43,7 @@ class App extends React.Component {
 
   render() {
 
-    let sidebar = this.props.isTwoScreenMode ? (
+    let sidebar = this.props.isTwoScreenMode || this.props.isPrintMode ? (
       <Motion defaultStyle={{width: 0}} style={{width: spring(0)}}>
         {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
       </Motion>
@@ -54,7 +53,7 @@ class App extends React.Component {
       </Motion>
     )
 
-    let pagesbar = this.props.isTwoScreenMode ? (
+    let pagesbar = this.props.isTwoScreenMode || this.props.isPrintMode ? (
       <Motion defaultStyle={{width: 0, padding: 0}} style={{width: spring(0), padding: spring(0)}}>
         {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
       </Motion>
@@ -64,10 +63,17 @@ class App extends React.Component {
       </Motion>
     )
 
-    let content = this.props.isPrintMode ? (
-
-      <Print/>
+    let editor = this.props.isPrintMode ?  (
+      <Motion defaultStyle={{flexGrow: 0}} style={{flexGrow: spring(0)}}>
+        {interpolatingStyle => <Flex className="editor" style={interpolatingStyle}><Editor/></Flex>}
+      </Motion>
     ) : (
+      <Motion defaultStyle={{flexGrow: 0}} style={{flexGrow: spring(1)}}>
+        {interpolatingStyle => <Flex className="editor" style={interpolatingStyle}><Editor/></Flex>}
+      </Motion>
+    )
+
+    return (
 
       <Layout type="column">
         <Fixed>
@@ -77,14 +83,13 @@ class App extends React.Component {
           <Layout type="row">
             {sidebar}
             {pagesbar}
-            <Flex className="editor"><Editor/></Flex>
+            {editor}
             <Flex className="viewer"><Viewer/></Flex>
           </Layout>
         </Flex>
      </Layout>
-    )
 
-    return content
+    )
   }
 
 }
