@@ -1,6 +1,8 @@
 // Library
 import React from 'react'
 import {Motion, spring} from 'react-motion'
+import { Draggable, Droppable } from 'react-drag-and-drop'
+
 
 // Alt - Flux
 // Actions
@@ -110,6 +112,10 @@ class CellItem extends React.Component {
     CellsActions.select(this.props.cell)
   }
 
+  onDrop(data) {
+    CellsActions.moveAfter(data.cell, this.props.cell.id)
+  }
+
   render() {
 
       let cell = this.props.cell
@@ -147,26 +153,33 @@ class CellItem extends React.Component {
       
       return (
         <div>
-          <Card onFocus={this.onSelect.bind(this)}>
-            <CardHeader title={type} style={cardStyle.headerStyle} titleStyle={cardStyle.titleStyle} ></CardHeader>
-            <CardText style={cardStyle.textStyle}>
-              <TextField hintText="# Hello World"
-                         inputStyle={cardStyle.inputStyle}
-                         underlineShow={false}
-                         multiLine={true} rows={1} rowsMax={1000}
-                         fullWidth={true}
-                         onChange={this.onChange.bind(this)}
-                         value={bodyText} 
-                         ref="bodyText"
-                         ></TextField>
-            </CardText>
+          <Draggable type="cell" data={cell.id} >
 
-            {actions}
+            <Card onFocus={this.onSelect.bind(this)}>
+              <CardHeader title={type} style={cardStyle.headerStyle} titleStyle={cardStyle.titleStyle} ></CardHeader>
+              <CardText style={cardStyle.textStyle}>
+                <TextField hintText="# Hello World"
+                           inputStyle={cardStyle.inputStyle}
+                           underlineShow={false}
+                           multiLine={true} rows={1} rowsMax={1000}
+                           fullWidth={true}
+                           onChange={this.onChange.bind(this)}
+                           value={bodyText} 
+                           ref="bodyText"
+                           ></TextField>
+              </CardText>
 
-          </Card>
+              {actions}
 
-          <Spacer/>
+            </Card>
 
+            <Spacer/>
+
+          </Draggable>
+
+          <Droppable types={['cell']} onDrop={this.onDrop.bind(this)}>
+             ...
+          </Droppable>
         </div>
       )
   }

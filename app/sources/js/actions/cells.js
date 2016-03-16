@@ -46,6 +46,10 @@ class CellsActions {
     this.dispatch()
   }
 
+  moveAfter(from, to) {
+    this.dispatch({from: from, to: to})
+  }
+
 }
 
 export default alt.createActions(CellsActions)

@@ -122,6 +122,24 @@ class CellsStore {
     this.visibleSelectLanguageView = false
   }
 
+  onMoveAfter(data) {
+
+    let _cells = this.cells
+
+    // fromの要素を抜き出す
+    let from = _.find(_cells, ["id", data.from])
+    // fromを一旦削除
+    _cells = _.reject(_cells, ["id", data.from])
+    // toのIndexを取得
+    let toIndex = _.findIndex(_cells, ['id', data.to])
+    // toの後ろにfromを挿入
+    _cells.splice(toIndex + 1, 0, from) // 後ろに挿入するので + 1 する (前に挿入する場合は + 0)
+
+
+    this.cells = _cells
+    this.Persist()
+  }
+
 }
 
 export default Alt.createStore(CellsStore, 'CellsStore')

@@ -52,6 +52,7 @@
     "npm-run-all": "^1.5.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-drag-and-drop": "^2.0.1",
     "react-highlight": "^0.6.1",
     "react-layout-pane": "^0.1.16",
     "react-markdown-area": "^0.3.8",
