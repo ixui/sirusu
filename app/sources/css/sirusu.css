@@ -98,6 +98,32 @@ html, body {
   transition: all 0.4s ease-in-out;
 }
 
+.editor .action-disable {
+  height: 0px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.editor .action-enable {
+  height: 70px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.editor .input-disable {
+  max-height: 80px;
+  overflow: auto;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.editor .input-enable {
+  max-height: 640px;
+  overflow: auto;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
 
 .viewer {
     padding: 12;

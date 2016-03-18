@@ -26,7 +26,7 @@ let browserWindow = remote.require('browser-window')
 
 const cardStyle = {
   headerStyle: {
-    height:        '10px',
+    height:        '15px',
     paddingTop:    '3px',
     paddingBottom: '3px',
     paddingLeft:   '3px',
@@ -34,10 +34,6 @@ const cardStyle = {
   titleStyle: {
     fontSize:      '10px',
     color:         Colors.grey300,
-  },
-  textStyle: {
-    maxHeight:     '700px',
-    overflowY:     'auto',
   },
   inputStyle: {
   },
@@ -137,6 +133,7 @@ class CellItem extends React.Component {
       let cell = this.props.cell
       let type = cell.subtype ? cell.subtype : cell.type
       let bodyText = cell.body ? cell.body : ""
+      let textStyle = this.props.isSelected ? "input-enable" : "input-disable"
       let actionsStyle = this.props.isSelected ? "action-enable" : "action-disable"
       let actions = this.props.isSelected ? (
         <div>
@@ -157,7 +154,7 @@ class CellItem extends React.Component {
 
             <Card onFocus={this.onSelect.bind(this)}>
               <CardHeader title={type} style={cardStyle.headerStyle} titleStyle={cardStyle.titleStyle} ></CardHeader>
-              <CardText style={cardStyle.textStyle}>
+              <CardText className={textStyle}>
                 <TextField hintText="# Hello World"
                            inputStyle={cardStyle.inputStyle}
                            underlineShow={false}
