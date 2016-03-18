@@ -43,24 +43,22 @@ class App extends React.Component {
 
   render() {
 
+    // 本当はここでアニメーションを使用したいが、動きがカクつくため保留
     let sidebar = this.props.isTwoScreenMode || this.props.isPrintMode ? (
       <Motion defaultStyle={{width: 0}} style={{width: spring(0)}}>
         {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
       </Motion>
     ) : (
-      <Motion defaultStyle={{width: 0}} style={{width: spring(200)}}>
-        {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
-      </Motion>
+      <Fixed className="sidebar"><SideBar/></Fixed>
     )
 
+    // 本当はここでアニメーションを使用したいが、動きがカクつくため保留
     let pagesbar = this.props.isTwoScreenMode || this.props.isPrintMode ? (
       <Motion defaultStyle={{width: 0, padding: 0}} style={{width: spring(0), padding: spring(0)}}>
         {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
       </Motion>
     ) : (
-      <Motion defaultStyle={{width: 0, padding: 0}} style={{width: spring(300), padding: spring(12)}}>
-        {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
-      </Motion>
+      <Fixed className="pagesbar"><PagesBar/></Fixed>
     )
 
     let editor = this.props.isPrintMode ?  (

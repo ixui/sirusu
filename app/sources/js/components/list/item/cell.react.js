@@ -70,6 +70,13 @@ const cardStyle = {
 
 class CellItem extends React.Component {
 
+  constructor() {
+    super()
+    this.state = {
+      dragover: false
+    }
+  }
+
   toMarkdown() {
     CellsActions.select(this.props.cell)
     CellsActions.toMarkdown()
@@ -113,7 +120,16 @@ class CellItem extends React.Component {
   }
 
   onDrop(data) {
+    this.setState({dragover: false})
     CellsActions.moveAfter(data.cell, this.props.cell.id)
+  }
+
+  onDragEnter(data) {
+    this.setState({dragover: true})
+  }
+
+  onDragLeave(data) {
+    this.setState({dragover: false})
   }
 
   render() {
@@ -151,6 +167,8 @@ class CellItem extends React.Component {
 
       )
       
+      let droppableStyle = this.state.dragover ? {backgroundColor: "#FAFAFA", height: 10} : {backgroundColor: "#FAFAFA", height: 5}
+
       return (
         <div>
           <Draggable type="cell" data={cell.id} >
@@ -177,8 +195,12 @@ class CellItem extends React.Component {
 
           </Draggable>
 
-          <Droppable types={['cell']} onDrop={this.onDrop.bind(this)}>
-             ...
+          <Droppable types={['cell']} 
+                     onDrop={this.onDrop.bind(this)}
+                     onDragEnter={this.onDragEnter.bind(this)}
+                     onDragLeave={this.onDragLeave.bind(this)}
+                     style={droppableStyle}>
+            &nbsp;
           </Droppable>
         </div>
       )
