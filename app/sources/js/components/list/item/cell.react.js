@@ -137,37 +137,19 @@ class CellItem extends React.Component {
       let cell = this.props.cell
       let type = cell.subtype ? cell.subtype : cell.type
       let bodyText = cell.body ? cell.body : ""
+      let actionsStyle = this.props.isSelected ? "action-enable" : "action-disable"
       let actions = this.props.isSelected ? (
-
-        <Motion defaultStyle={{height: 0}} style={{height: spring(70)}}>
-          {interpolatingStyle => (
-            <CardActions style={interpolatingStyle}>
-              <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
-              <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
-              <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
-
-              <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
-            </CardActions>
-          )}
-        </Motion>
-
+        <div>
+          <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
+          <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
+          <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
+          <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
+        </div>
       ) : (
-
-        <Motion defaultStyle={{height: 0}} style={{height: spring(0)}}>
-          {interpolatingStyle => (
-            <CardActions style={interpolatingStyle}>
-              <IconButton onClick={this.toMarkdown.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Markdown" tooltipPosition="top-right">class</IconButton>
-              <IconButton onClick={this.toDiagram.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Diagram" tooltipPosition="top-right">donut_small</IconButton>
-              <IconButton onClick={this.toCode.bind(this)} iconStyle={cardStyle.iconStyle} iconClassName="material-icons" tooltip="Code" tooltipPosition="top-right">developer_mode</IconButton>
-
-              <IconButton onClick={this.onRemove.bind(this)} iconStyle={cardStyle.deliconStyle} iconClassName="material-icons" tooltip="削除" tooltipPosition="top-right">remove_circle</IconButton>
-            </CardActions>
-          )}
-        </Motion>
-
+        <div>
+        </div>
       )
-      
-      let droppableStyle = this.state.dragover ? {backgroundColor: "#FAFAFA", height: 10} : {backgroundColor: "#FAFAFA", height: 5}
+      let droppableStyle = this.state.dragover ? "dropover" : "droppable" 
 
       return (
         <div>
@@ -187,7 +169,9 @@ class CellItem extends React.Component {
                            ></TextField>
               </CardText>
 
-              {actions}
+              <CardActions className={actionsStyle}>
+                {actions}
+              </CardActions>
 
             </Card>
 
@@ -199,7 +183,7 @@ class CellItem extends React.Component {
                      onDrop={this.onDrop.bind(this)}
                      onDragEnter={this.onDragEnter.bind(this)}
                      onDragLeave={this.onDragLeave.bind(this)}
-                     style={droppableStyle}>
+                     className={droppableStyle}>
             &nbsp;
           </Droppable>
         </div>

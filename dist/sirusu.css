@@ -14,10 +14,21 @@ html, body {
 }
 
 .sidebar {
-    padding: 12;
-    background: #00838F;
-    width: 200px;
-    color: #fff;
+  padding: 12;
+  background: #00838F;
+  width: 200px;
+  color: #fff;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.sidebar-hidden {
+  padding: 0;
+  background: #00838F;
+  width: 0px;
+  color: #fff;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .sidebar a {
@@ -28,10 +39,21 @@ html, body {
 }
 
 .pagesbar {
-    padding: 12;
-    background: #0097A7;
-    width: 300px;
-    color: #fff;
+  padding: 12;
+  background: #0097A7;
+  width: 300px;
+  color: #fff;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.pagesbar-hidden {
+  padding: 0;
+  background: #0097A7;
+  width: 0px;
+  color: #fff;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
 }
 
 .pagesbar li {
@@ -48,6 +70,35 @@ html, body {
     color: #212121;
 }
 
+.editor span { /* ツールチップの吹き出し */
+    color: #fff;
+}
+
+.editor .droppable {
+  height: 8px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.editor .dropover {
+  height: 16px;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.editor .action-disable {
+  height: 0px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.editor .action-enable {
+  height: 70px;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+
 .viewer {
     padding: 12;
     background: #FAFAFA;
@@ -56,6 +107,10 @@ html, body {
 
 .viewer * {
     color: #212121;
+}
+
+.viewer span { /* ツールチップの吹き出し */
+    color: #fff;
 }
 
 .search-query {

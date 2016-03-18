@@ -44,11 +44,11 @@ const iconButtonStyle = {
 
 class PageItem extends React.Component {
 
-  selectPage() {
+  onSelect() {
     PagesActions.select(this.props.page)
   }
 
-  editPage() {
+  onEdit() {
     PagesActions.select(this.props.page)
     PagesActions.showEditPageView()
   }
@@ -63,7 +63,7 @@ class PageItem extends React.Component {
     }
 
     const iconButton = (
-      <IconButton onClick={this.editPage.bind(this)} 
+      <IconButton onClick={this.onEdit.bind(this)} 
                   style={iconButtonStyle.style}
                   iconStyle={iconButtonStyle.iconStyle} 
                   iconClassName="material-icons" 
@@ -72,7 +72,7 @@ class PageItem extends React.Component {
     );
 
     return (
-      <ListItem onClick={this.selectPage.bind(this)} 
+      <ListItem onClick={this.onSelect.bind(this)} 
                 style={pageStyle}
                 innerDivStyle={listItemStyle.innerDivStyle} 
                 primaryText={page.title} 

@@ -43,24 +43,10 @@ class App extends React.Component {
 
   render() {
 
-    // 本当はここでアニメーションを使用したいが、動きがカクつくため保留
-    let sidebar = this.props.isTwoScreenMode || this.props.isPrintMode ? (
-      <Motion defaultStyle={{width: 0}} style={{width: spring(0)}}>
-        {interpolatingStyle => <Fixed className="sidebar" style={interpolatingStyle}><SideBar/></Fixed>}
-      </Motion>
-    ) : (
-      <Fixed className="sidebar"><SideBar/></Fixed>
-    )
+    let sidebarStyle = this.props.isTwoScreenMode || this.props.isPrintMode ? "sidebar-hidden" : "sidebar"
+    let pagesbarStyle = this.props.isTwoScreenMode || this.props.isPrintMode ? "pagesbar-hidden" : "pagesbar"
 
-    // 本当はここでアニメーションを使用したいが、動きがカクつくため保留
-    let pagesbar = this.props.isTwoScreenMode || this.props.isPrintMode ? (
-      <Motion defaultStyle={{width: 0, padding: 0}} style={{width: spring(0), padding: spring(0)}}>
-        {interpolatingStyle => <Fixed className="pagesbar" style={interpolatingStyle}><PagesBar/></Fixed>}
-      </Motion>
-    ) : (
-      <Fixed className="pagesbar"><PagesBar/></Fixed>
-    )
-
+    // Flex-Boxの制御はMotionを使用する
     let editor = this.props.isPrintMode ?  (
       <Motion defaultStyle={{flexGrow: 0}} style={{flexGrow: spring(0)}}>
         {interpolatingStyle => <Flex className="editor" style={interpolatingStyle}><Editor/></Flex>}
@@ -79,8 +65,8 @@ class App extends React.Component {
         </Fixed>
         <Flex>
           <Layout type="row">
-            {sidebar}
-            {pagesbar}
+            <Fixed className={sidebarStyle}><SideBar/></Fixed>
+            <Fixed className={pagesbarStyle}><PagesBar/></Fixed>
             {editor}
             <Flex className="viewer"><Viewer/></Flex>
           </Layout>
