@@ -45,17 +45,7 @@ class App extends React.Component {
 
     let sidebarStyle = this.props.isTwoScreenMode || this.props.isPrintMode ? "sidebar-hidden" : "sidebar"
     let pagesbarStyle = this.props.isTwoScreenMode || this.props.isPrintMode ? "pagesbar-hidden" : "pagesbar"
-
-    // Flex-Boxの制御はMotionを使用する
-    let editor = this.props.isPrintMode ?  (
-      <Motion defaultStyle={{flexGrow: 0}} style={{flexGrow: spring(0)}}>
-        {interpolatingStyle => <Flex className="editor" style={interpolatingStyle}><Editor/></Flex>}
-      </Motion>
-    ) : (
-      <Motion defaultStyle={{flexGrow: 0}} style={{flexGrow: spring(1)}}>
-        {interpolatingStyle => <Flex className="editor" style={interpolatingStyle}><Editor/></Flex>}
-      </Motion>
-    )
+    let editorStyle = this.props.isPrintMode ? {flex: 0, "transition": "all 0.4s ease-in-out"} : {flex: 1, "transition": "all 0.4s ease-in-out"}
 
     return (
 
@@ -67,7 +57,7 @@ class App extends React.Component {
           <Layout type="row">
             <Fixed className={sidebarStyle}><SideBar/></Fixed>
             <Fixed className={pagesbarStyle}><PagesBar/></Fixed>
-            {editor}
+            <Flex style={editorStyle}><Editor/></Flex>
             <Flex className="viewer"><Viewer/></Flex>
           </Layout>
         </Flex>
