@@ -57,7 +57,7 @@ class App extends React.Component {
           <Layout type="row">
             <Fixed className={sidebarStyle}><SideBar/></Fixed>
             <Fixed className={pagesbarStyle}><PagesBar/></Fixed>
-            <Flex style={editorStyle}><Editor/></Flex>
+            <Flex className="editor" style={editorStyle}><Editor/></Flex>
             <Flex className="viewer"><Viewer/></Flex>
           </Layout>
         </Flex>

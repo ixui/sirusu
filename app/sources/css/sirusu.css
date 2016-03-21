@@ -286,6 +286,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 
 
 
+/* ********************************************************************************************** */
 
 /* Mermaid.js */
 /* Flowchart variables */
@@ -294,6 +295,7 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .mermaid .label {
   font-family: 'trebuchet ms', verdana, arial;
   color: #333;
+  font-size: 11px;
 }
 .node rect,
 .node circle,
@@ -639,6 +641,8 @@ div.mermaidTooltip {
   pointer-events: none;
   z-index: 100;
 }
+
+/* ********************************************************************************************** */
 
 /* GFM */
 .markdown-body {
@@ -1293,6 +1297,7 @@ div.mermaidTooltip {
   border-color: #4078c0;
 }
 
+/* ********************************************************************************************** */
 
 @media print {
   * {
