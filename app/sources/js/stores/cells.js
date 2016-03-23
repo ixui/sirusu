@@ -54,6 +54,7 @@ class CellsStore {
 
     let cell = {id: UUID.get(), type: "markdown", subtype: null, body: "# Hello World"}
     this.cells.push(cell)
+    this.currentCell = cell
 
     this.Persist()
   }
