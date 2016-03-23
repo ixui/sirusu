@@ -66,10 +66,6 @@ html, body {
     color: #212121;
 }
 
-.editor span { /* ツールチップの吹き出し */
-    color: #fff;
-}
-
 .editor .droppable {
   height: 8px;
   transition: all 0.2s ease-in-out;
@@ -123,10 +119,6 @@ html, body {
     color: #212121;
 }
 
-.viewer span { /* ツールチップの吹き出し */
-    color: #fff;
-}
-
 .search-query {
     margin-left: 0px;
     margin-right: 20px;
@@ -178,6 +170,11 @@ svg {
   width: 100%;
   height: auto;
 }
+
+
+
+
+
 
 /** highlight.js **/
 /*
