@@ -15,6 +15,13 @@
     window.require = require;
     window.React = require('react');
     window.remote = require('remote');
+
+    // 外部へのリンクはブラウザで開くように促す
+    window.$ = require('jquery');
+    $(document).on('click', 'a[href^="http"]', function(event) {
+        event.preventDefault();
+        require('shell').openExternal(this.href);
+    });
   </script>
   <script src="sirusu.js"></script>
 </html>
